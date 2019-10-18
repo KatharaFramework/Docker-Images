@@ -12,3 +12,13 @@ Currently available images are:
 To build an image from source please run `make <image_name>`.
 
 Example: `make quagga`
+
+## Extend Kathará Images
+
+To alter (locally) an existing Kathará image refer to the following steps (remember that, by default, Docker needs root or sudo on Linux).
+1. `docker pull kathara/<image_name>`
+2. `docker run -tid --name <image_new_name> kathara/<image_name>`
+3. `docker exec -ti  <image_new_name> bash`
+4. Do your thing, then exit.
+5. `docker commit <image_new_name> kathara/<image_new_name>`
+6. `docker rm -f <image_new_name>`
