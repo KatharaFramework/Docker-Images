@@ -1,6 +1,6 @@
 # Docker Images
 
-This repository contains `Dockerfile`s used to build Kathara images.
+This repository contains `Dockerfile`s used to build Kathara images. A list of the Docker images we provided can be found at [this page](https://hub.docker.com/u/kathara/) in the Docker Hub.
 
 Currently available images are:
 - kathara/base: used to build all other images. It contains a variety of network tools and some complex services like bind, apache, etc.
