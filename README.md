@@ -7,6 +7,7 @@ Currently available images are:
 - kathara/quagga: extends the base image adding the [Quagga routing daemon](https://www.nongnu.org/quagga/).
 - kathara/frr: extends the base image adding [FRRouting](https://frrouting.org/).
 - kathara/sdn: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
+- kathara/linux-build: debian9 based image to compile and build .deb package
 
 ## Building from source
 To build an image from source please run `make <image_name>`.

@@ -10,6 +10,9 @@ RUN apt update \
 		python3-pip \
 		libxml2-dev \
 		zlib1g-dev \
+		build-essential \
+		lintian \
+		devscripts \
 		git \
 		ruby-full
 
@@ -22,3 +25,6 @@ WORKDIR /opt
 
 RUN git clone https://github.com/apjanke/ronn-ng.git
 ENV PATH="/opt/ronn-ng/bin:${PATH}"
+ENV RUBYOPT="-KU -E utf-8:utf-8"
+
+WORKDIR /opt/kathara/scripts/Linux
