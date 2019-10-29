@@ -1,4 +1,4 @@
-.PHONY: base quagga frr sdn linux-build
+.PHONY: base quagga frr sdn
 
 base:
 	cd base && docker build -t kathara/base .
@@ -11,6 +11,3 @@ frr: base
 
 sdn: base
 	cd sdn && docker build -t kathara/sdn .
-
-linux-build:
-	cd Linux-Build && docker build -t kathara/linux-build .
