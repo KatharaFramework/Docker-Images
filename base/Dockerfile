@@ -18,6 +18,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     dnsutils \
     dublin-traceroute \
     ethtool \
+    expect \
     flex \
     geoip-database \
     git \
@@ -25,7 +26,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     ieee-data \
     ifupdown \
     inetutils-traceroute \
-    iproute2 \
     iptables \
     iputils-ping \
     iputils-tracepath \

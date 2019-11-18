@@ -24,7 +24,6 @@ RUN chmod -R 777 /var/log/quagga
 RUN chmod -R 777 /var/log/zebra
 RUN ln /etc/init.d/quagga /etc/init.d/zebra
 RUN ln -s /etc/quagga /etc/zebra
-RUN echo "export VTYSH_PAGER=more" >> ~/.bashrc
 
 COPY zebra.conf /etc/quagga/zebra.conf
 RUN chown quagga:quagga /etc/quagga/zebra.conf
