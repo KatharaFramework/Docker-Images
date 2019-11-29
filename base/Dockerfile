@@ -16,7 +16,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     curl \
     diffutils \
     dnsutils \
-    dublin-traceroute \
     ethtool \
     expect \
     flex \
@@ -52,6 +51,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     telnet \
     wget \
     vim
+
+RUN echo "deb http://httpredir.debian.org/debian testing main" | tee /etc/apt/sources.list.d/debian-unstable.list && apt update && DEBIAN_FRONTEND=noninteractive apt install -y dublin-traceroute -t testing && rm /etc/apt/sources.list.d/debian-unstable.list && apt update
 
 RUN apt clean
 
