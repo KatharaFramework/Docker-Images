@@ -24,7 +24,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     gnupg \
     ieee-data \
     ifupdown \
-    inetutils-traceroute \
     iptables \
     iputils-ping \
     iputils-tracepath \
@@ -49,6 +48,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     tar \
     tcpdump \
     telnet \
+    traceroute \
     wget \
     vim
 
