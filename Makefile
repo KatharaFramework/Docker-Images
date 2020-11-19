@@ -1,5 +1,7 @@
 .PHONY: base quagga frr sdn
 
+all: base quagga frr sdn
+
 base:
 	cd base && docker build -t kathara/base .
 
