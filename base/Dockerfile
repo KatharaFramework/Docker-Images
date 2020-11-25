@@ -1,8 +1,9 @@
 FROM debian:9
 
+ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
 RUN apt upgrade -y
-RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+RUN apt install -y \
     apache2 \
     apache2-bin \
     apt-utils \
@@ -54,7 +55,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
 
 RUN echo "deb http://httpredir.debian.org/debian testing main" | tee /etc/apt/sources.list.d/debian-unstable.list && apt update && DEBIAN_FRONTEND=noninteractive apt install -y dublin-traceroute -t testing && rm /etc/apt/sources.list.d/debian-unstable.list && apt update
 
-RUN apt clean
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
 

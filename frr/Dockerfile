@@ -9,4 +9,5 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y frr frr-pythonto
 RUN sed -i -e 's/service/no service/' /etc/frr/vtysh.conf \
     && rm /etc/frr/frr.conf
 
-RUN apt clean
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
