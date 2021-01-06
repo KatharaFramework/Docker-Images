@@ -37,6 +37,7 @@ RUN apt install -y \
     nano \
     net-tools \
     netbase \
+    netcat \
     openssh-client \
     openssh-server \
     openssh-sftp-server \
