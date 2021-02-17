@@ -8,13 +8,13 @@ pushall:
 	docker push kathara/frr:debian9
 	docker push kathara/sdn:debian9
 	docker tag kathara/base:debian9 kathara/base:latest
-	docker push kathara/base
+	docker push kathara/base:latest
 	docker tag kathara/quagga:debian9 kathara/quagga:latest
-	docker push kathara/quagga
+	docker push kathara/quagga:latest
 	docker tag kathara/frr:debian9 kathara/frr:latest
-	docker push kathara/frr
+	docker push kathara/frr:latest
 	docker tag kathara/sdn:debian9 kathara/sdn:latest
-	docker push kathara/sdn
+	docker push kathara/sdn:latest
 
 
 base:
