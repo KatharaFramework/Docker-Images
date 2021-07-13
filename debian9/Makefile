@@ -7,6 +7,7 @@ pushall:
 	docker push kathara/quagga:debian9
 	docker push kathara/frr:debian9
 	docker push kathara/sdn:debian9
+	docker push kathara/p4:debian9
 	docker tag kathara/base:debian9 kathara/base:latest
 	docker push kathara/base:latest
 	docker tag kathara/quagga:debian9 kathara/quagga:latest
@@ -15,7 +16,8 @@ pushall:
 	docker push kathara/frr:latest
 	docker tag kathara/sdn:debian9 kathara/sdn:latest
 	docker push kathara/sdn:latest
-
+	docker tag kathara/p4:debian9 kathara/p4:latest
+	docker push kathara/p4:latest
 
 base:
 	cd base && docker build -t kathara/base:debian9 .
@@ -28,3 +30,6 @@ frr: base
 
 sdn: base
 	cd sdn && docker build -t kathara/sdn:debian9 .
+
+p4: base
+	cd p4 && docker build -t kathara/p4:debian9 .

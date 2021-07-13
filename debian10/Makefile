@@ -7,6 +7,7 @@ pushall:
 	docker push kathara/quagga:debian10
 	docker push kathara/frr:debian10
 	docker push kathara/sdn:debian10
+	docker push kathara/p4:debian10
 
 base:
 	cd base && docker build -t kathara/base:debian10 .
@@ -19,3 +20,6 @@ frr: base
 
 sdn: base
 	cd sdn && docker build -t kathara/sdn:debian10 .
+
+p4: base
+	cd p4 && docker build -t kathara/p4:debian10 .
