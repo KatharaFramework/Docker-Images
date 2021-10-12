@@ -4,19 +4,19 @@ ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
 RUN apt upgrade -y
 
-RUN wget http://snapshot.debian.org/archive/debian/20161019T045440Z/pool/main/q/quagga/quagga_1.0.20160315-3_amd64.deb
+RUN wget -O quagga.deb http://snapshot.debian.org/archive/debian/20161019T045440Z/pool/main/q/quagga/quagga_1.0.20160315-3_$(dpkg --print-architecture).deb
 
-RUN dpkg -i quagga_1.0.20160315-3_amd64.deb || true
+RUN dpkg -i quagga.deb || true
 
 RUN apt install -y \
 	cron \
 	logrotate
 
-RUN dpkg -i quagga_1.0.20160315-3_amd64.deb
+RUN dpkg -i quagga.deb
 
 RUN apt-mark hold quagga
 
-RUN rm quagga_1.0.20160315-3_amd64.deb
+RUN rm quagga.deb
 
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*

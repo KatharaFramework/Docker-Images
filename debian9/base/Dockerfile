@@ -1,5 +1,8 @@
 FROM debian:9
 
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
 RUN apt upgrade -y
@@ -17,6 +20,7 @@ RUN apt install -y \
     curl \
     diffutils \
     dnsutils \
+    dublin-traceroute \
     ethtool \
     expect \
     flex \
@@ -33,7 +37,7 @@ RUN apt install -y \
     lsb-base \
     lsb-release \
     make \
-    manpages \
+    man-db \
     nano \
     net-tools \
     netbase \
@@ -53,8 +57,6 @@ RUN apt install -y \
     traceroute \
     wget \
     vim
-
-RUN echo "deb http://httpredir.debian.org/debian testing main" | tee /etc/apt/sources.list.d/debian-unstable.list && apt update && DEBIAN_FRONTEND=noninteractive apt install -y dublin-traceroute -t testing && rm /etc/apt/sources.list.d/debian-unstable.list && apt update
 
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*

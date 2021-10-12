@@ -1,5 +1,8 @@
 FROM debian:10
 
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
 RUN apt upgrade -y
@@ -15,9 +18,9 @@ RUN apt install -y \
     bridge-utils \
     build-essential \
     curl \
-    dublin-traceroute  \
     diffutils \
     dnsutils \
+    dublin-traceroute  \
     ethtool \
     expect \
     flex \
@@ -35,7 +38,7 @@ RUN apt install -y \
     lsb-base \
     lsb-release \
     make \
-    manpages \
+    man-db \
     nano \
     net-tools \
     netbase \
