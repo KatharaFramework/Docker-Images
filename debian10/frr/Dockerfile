@@ -2,7 +2,7 @@ FROM kathara/base:debian10
 
 RUN curl -s https://deb.frrouting.org/frr/keys.asc | apt-key add -   
    
-RUN echo deb https://deb.frrouting.org/frr $(lsb_release -s -c) "frr-stable" | tee -a /etc/apt/sources.list.d/frr.list 
+RUN echo deb https://deb.frrouting.org/frr $(lsb_release -s -c) "frr-7" | tee -a /etc/apt/sources.list.d/frr.list 
 
 RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y frr frr-pythontools
 
