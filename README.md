@@ -26,8 +26,8 @@ The easiest way to extend a Kathará image is to clone this repository, change t
 
 If you instead prefer to alter (locally) an existing Kathará image refer to the following steps (remember that, by default, Docker needs root or sudo on Linux).
 1. `docker pull kathara/<image_name>`
-2. `docker run -tid --name <image_new_name> kathara/<image_name>`
-3. `docker exec -ti  <image_new_name> bash`
+2. `docker run -tid --name <container_name> kathara/<image_name>`
+3. `docker exec -ti  <container_name> bash`
 4. Do your thing, then exit.
-5. `docker commit <image_new_name> kathara/<image_new_name>`
-6. `docker rm -f <image_new_name>`
+5. `docker commit <container_name> kathara/<image_new_name>`
+6. `docker rm -f <container_name>`
