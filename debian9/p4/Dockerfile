@@ -1,4 +1,4 @@
-FROM kathara/base
+FROM kathara/base:debian9
 
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
@@ -43,8 +43,11 @@ RUN git clone https://github.com/p4lang/behavioral-model && \
 	./autogen.sh && \
 	./configure && \
 	make && \
-	make install && ldconfig && \
-	cd / && rm -Rf behavioral-model/
+	make install && ldconfig
+
+RUN cd behavioral-model/tools && make install && \
+	cd / && mv behavioral-model/tools . && \
+	rm -Rf behavioral-model/
 
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/

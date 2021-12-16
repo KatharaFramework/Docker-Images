@@ -1,4 +1,4 @@
-FROM kathara/base
+FROM kathara/base:debian9
 
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update

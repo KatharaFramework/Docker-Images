@@ -1,4 +1,4 @@
-FROM kathara/base
+FROM kathara/base:debian9
 
 RUN curl -s https://deb.frrouting.org/frr/keys.asc | apt-key add -   
    

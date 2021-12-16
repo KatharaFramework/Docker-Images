@@ -1,9 +1,9 @@
 BUILDX=docker buildx build --platform linux/amd64,linux/arm64
 
-.PHONY: base quagga frr sdn all pushall all-multi create-builder base-multi quagga-multi
+.PHONY: base quagga frr sdn p4 all pushall all-multi create-builder base-multi quagga-multi frr-multi sdn-multi p4-multi delete-builder
 
-all: base quagga frr sdn
-all-multi: create-builder base-multi quagga-multi frr-multi sdn-multi p4-multi
+all: base quagga frr sdn p4
+all-multi: create-builder base-multi quagga-multi frr-multi sdn-multi p4-multi delete-builder
 
 pushall:
 	docker push kathara/base:debian9
@@ -11,16 +11,6 @@ pushall:
 	docker push kathara/frr:debian9
 	docker push kathara/sdn:debian9
 	docker push kathara/p4:debian9
-	docker image tag kathara/base:debian9 kathara/base:latest
-	docker push kathara/base:latest
-	docker image tag kathara/quagga:debian9 kathara/quagga:latest
-	docker push kathara/quagga:latest
-	docker image tag kathara/frr:debian9 kathara/frr:latest
-	docker push kathara/frr:latest
-	docker image tag kathara/sdn:debian9 kathara/sdn:latest
-	docker push kathara/sdn:latest
-	docker image tag kathara/p4:debian9 kathara/p4:latest
-	docker push kathara/p4:latest
 
 base:
 	docker build -t kathara/base:debian9 base
@@ -38,20 +28,23 @@ p4: base
 	docker build -t kathara/p4:debian9 p4
 
 base-multi: create-builder
-	$(BUILDX) -t kathara/base:debian9 -t kathara/base:latest --push base
+	$(BUILDX) -t kathara/base:debian9 --push base
 
 quagga-multi: create-builder base-multi
-	$(BUILDX) -t kathara/quagga:debian9 -t kathara/quagga:latest --push quagga
+	$(BUILDX) -t kathara/quagga:debian9 --push quagga
 
 frr-multi: create-builder base-multi
-	$(BUILDX) -t kathara/frr:debian9 -t kathara/frr:latest --push frr
+	$(BUILDX) -t kathara/frr:debian9 --push frr
 
 sdn-multi: create-builder base-multi
-	$(BUILDX) -t kathara/sdn:debian9 -t kathara/sdn:latest --push sdn
+	$(BUILDX) -t kathara/sdn:debian9 --push sdn
 
 p4-multi: create-builder base-multi
-	$(BUILDX) -t kathara/p4:debian9 -t kathara/p4:latest --push p4
+	$(BUILDX) -t kathara/p4:debian9 --push p4
 
 create-builder:
 	docker buildx create --name kat-builder --use
 	docker buildx inspect --bootstrap
+
+delete-builder:
+	docker buildx rm kat-builder

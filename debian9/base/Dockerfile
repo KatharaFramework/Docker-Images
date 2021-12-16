@@ -48,6 +48,7 @@ RUN apt install -y \
     openssl \
     paris-traceroute \
     pkg-config \
+    python3-scapy \
     rsync \
     screen \
     sed \
