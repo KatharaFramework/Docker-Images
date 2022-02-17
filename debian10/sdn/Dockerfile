@@ -15,6 +15,7 @@ RUN apt install -y \
 	python3-pip \
 	zlib1g-dev
 
+RUN python3 -m pip install --no-cache-dir eventlet==0.30.2
 RUN python3 -m pip install --no-cache-dir ryu
 
 RUN /usr/bin/ovsdb-tool create /etc/openvswitch/conf.db
