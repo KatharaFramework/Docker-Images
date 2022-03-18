@@ -1,6 +1,6 @@
 # Docker Images
 
-This repository contains `Dockerfile`s used to build Kathará images. A list of the Docker images we provided can be found at [this page](https://hub.docker.com/u/kathara/) in the Docker Hub.
+This repository contains `Dockerfile`s used to build Kathará images. A list of the Docker images we provide can be found at [this page](https://hub.docker.com/u/kathara/) in the Docker Hub.
 Images are built both with `docker build` and with `docker buildx` for multi-architecture support.
 Currently our images are based on Debian 9 (tag `debian9`) and Debian 10 (tag `debian10`) and are compiled for `amd64` and `arm64`. `latest` tag is a retag of `debian10`.
 If you need images based on other Linux distributions, feel free to create a PR with other Dockerfiles.
