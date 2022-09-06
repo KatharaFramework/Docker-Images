@@ -4,9 +4,7 @@ ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
 RUN apt upgrade -y
 RUN apt install -y \
-	python3-pip \
 	gcc \
-	python3-dev \
 	libffi-dev \
 	libssl-dev \
 	libxml2-dev \
@@ -21,7 +19,6 @@ RUN wget -O openvswitch-switch.deb http://ftp.it.debian.org/debian/pool/main/o/o
     apt install -y ./openvswitch-switch.deb && \
     rm openvswitch-switch.deb
 
-RUN python3 -m pip install --no-cache-dir --upgrade pip
 RUN python3 -m pip install --no-cache-dir eventlet==0.30.2
 RUN python3 -m pip install --no-cache-dir pbr wrapt
 RUN python3 -m pip install --no-cache-dir ryu

@@ -11,8 +11,6 @@ RUN apt install -y \
 	libxslt1-dev \
 	openvswitch-common \
 	openvswitch-switch \
-	python3-dev \
-	python3-pip \
 	zlib1g-dev
 
 RUN python3 -m pip install --no-cache-dir eventlet==0.30.2

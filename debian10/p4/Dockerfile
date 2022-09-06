@@ -36,10 +36,10 @@ RUN git clone --recursive https://github.com/p4lang/p4c.git && \
 
 RUN git clone https://github.com/p4lang/behavioral-model && \
 	cd behavioral-model && \
-    sed -i 's/sudo//g' travis/install-thrift.sh && bash travis/install-thrift.sh && \
-	sed -i 's/sudo//g' travis/install-nanomsg.sh && bash travis/install-nanomsg.sh && \
+    sed -i 's/sudo//g' ci/install-thrift.sh && bash ci/install-thrift.sh && \
+	sed -i 's/sudo//g' ci/install-nanomsg.sh && bash ci/install-nanomsg.sh && \
 	ldconfig && \
-	sed -i 's/sudo//g' travis/install-nnpy.sh && bash travis/install-nnpy.sh && \
+	sed -i 's/sudo//g' ci/install-nnpy.sh && bash ci/install-nnpy.sh && \
 	./autogen.sh && \
 	./configure && \
 	make && \

@@ -49,7 +49,8 @@ RUN apt install -y \
     openssl \
     paris-traceroute \
     pkg-config \
-    python3-scapy \
+    python3-dev \
+    python3-pip \
     rsync \
     screen \
     sed \
@@ -60,9 +61,11 @@ RUN apt install -y \
     wget \
     vim
 
-
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir scapy 
 
 RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
 
