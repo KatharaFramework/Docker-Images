@@ -61,6 +61,8 @@ RUN apt install -y \
     wget \
     vim
 
+WORKDIR /tmp
+
 RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/ | \
         tac | \
         grep -m 1 -o "iproute2-5[\.0-9]*[0-9]" | \
@@ -69,7 +71,7 @@ RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/
     tar xf $FILE_NAME.tar.xz && \
     cd $FILE_NAME && \
     ./configure && \
-    make && \
+    make -j$(nproc) && \
     make install && \
     cd .. && \
     rm -r $FILE_NAME && \

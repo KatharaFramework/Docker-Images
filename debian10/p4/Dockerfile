@@ -26,27 +26,31 @@ RUN apt install -y \
 	llvm \
 	protobuf-compiler
 
+WORKDIR /tmp 
+
 RUN git clone --recursive https://github.com/p4lang/p4c.git && \
     cd p4c && mkdir build && cd build && \
 	cmake .. && \
-	make -j4 && \
+	make -j$(nproc) && \
 	make install && ldconfig && \
-	cd / && rm -Rf p4c/
+	cd .. && rm -Rf p4c/
 
 RUN git clone --depth=1 -b v1.43.2 https://github.com/google/grpc.git && \
 	cd grpc && \
 	git submodule update --init --recursive && \
 	mkdir -p cmake/build && cd cmake/build && \
-	cmake ../.. && make && \
+	cmake ../.. && make -j$(nproc) && \
 	make install && ldconfig && \
-	cd / && rm -Rf grpc && \
+	cd ../.. && rm -Rf grpc && \
 	git clone https://github.com/p4lang/PI && \
  	cd PI && \
     git submodule update --init && \
 	./autogen.sh && \
-	./configure --with-proto && make && \ 
+	./configure --with-proto && make -j$(nproc) && \ 
 	make install && ldconfig && \
-	cd / && rm -Rf PI
+	cd .. && rm -Rf PI
+
+WORKDIR /
 
 RUN git clone https://github.com/p4lang/behavioral-model && \
 	cd behavioral-model && \
@@ -56,7 +60,7 @@ RUN git clone https://github.com/p4lang/behavioral-model && \
 	sed -i 's/sudo//g' ci/install-nnpy.sh && bash ci/install-nnpy.sh && \
 	./autogen.sh && \
 	./configure --with-pi && \
-	make && \
+	make -j$(nproc) && \
 	make install && ldconfig
 	
 RUN cd behavioral-model/tools && make install && \
