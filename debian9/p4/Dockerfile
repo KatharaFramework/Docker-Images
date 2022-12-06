@@ -24,8 +24,7 @@ RUN apt install -y \
 	libssl-dev \
 	libtool \
 	llvm \
-	protobuf-compiler \
-	python3-pip
+	protobuf-compiler
 
 RUN git clone --recursive https://github.com/p4lang/p4c.git && \
     cd p4c && mkdir build && cd build && \
@@ -34,6 +33,21 @@ RUN git clone --recursive https://github.com/p4lang/p4c.git && \
 	make install && ldconfig && \
 	cd / && rm -Rf p4c/
 
+RUN git clone --depth=1 -b v1.43.2 https://github.com/google/grpc.git && \
+	cd grpc && \
+	git submodule update --init --recursive && \
+	mkdir -p cmake/build && cd cmake/build && \
+	cmake ../.. && make && \
+	make install && ldconfig && \
+	cd / && rm -Rf grpc && \
+	git clone https://github.com/p4lang/PI && \
+ 	cd PI && \
+    git submodule update --init && \
+	./autogen.sh && \
+	./configure --with-proto && make && \ 
+	make install && ldconfig && \
+	cd / && rm -Rf PI
+
 RUN git clone https://github.com/p4lang/behavioral-model && \
 	cd behavioral-model && \
     sed -i 's/sudo//g' ci/install-thrift.sh && bash ci/install-thrift.sh && \
@@ -41,13 +55,21 @@ RUN git clone https://github.com/p4lang/behavioral-model && \
 	ldconfig && \
 	sed -i 's/sudo//g' ci/install-nnpy.sh && bash ci/install-nnpy.sh && \
 	./autogen.sh && \
-	./configure && \
+	./configure --with-pi && \
 	make && \
 	make install && ldconfig
 
 RUN cd behavioral-model/tools && make install && \
 	cd / && mv behavioral-model/tools . && \
 	rm -Rf behavioral-model/
+
+RUN python3 -m pip install --no-cache-dir p4runtime && \
+	git clone https://github.com/p4lang/tutorials.git && \
+	mv tutorials/utils/p4runtime_lib /usr/local/lib/python3.7/site-packages/p4runtime_lib && \
+	rm -Rf tutorials
+
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION python
+ENV PYTHONPATH $PYTHONPATH:/usr/local/lib/python3.7/site-packages/
 
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/
