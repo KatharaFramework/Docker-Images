@@ -56,21 +56,10 @@ RUN apt install -y \
     tar \
     tcpdump \
     telnet \
+    tmux \
     traceroute \
     wget \
     vim
-
-RUN apt clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir scapy 
-
-RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
-
-COPY .bashrc /root/.bashrc
-
-WORKDIR /tmp
 
 RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/ | \
         tac | \
@@ -85,6 +74,18 @@ RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/
     cd .. && \
     rm -r $FILE_NAME && \
     rm $FILE_NAME.tar.xz
+
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir scapy 
+
+RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
+
+COPY .bashrc /root/.bashrc
+
+WORKDIR /tmp
 
 WORKDIR /
 
