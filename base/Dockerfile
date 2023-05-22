@@ -1,4 +1,5 @@
-FROM debian:10
+FROM debian:11
+LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -10,7 +11,7 @@ RUN apt install -y \
     apache2 \
     apache2-bin \
     apt-utils \
-    apt-transport-https \ 
+    apt-transport-https \
     arping \
     arptables \
     bind9 \
@@ -27,12 +28,17 @@ RUN apt install -y \
     geoip-database \
     git \
     gnupg \
+    hping3 \
     ieee-data \
     ifupdown \
     iptables \
     iputils-ping \
     iputils-tracepath \
     less \
+    libdublintraceroute-dev \
+    libjsoncpp-dev \
+    libpcap-dev \
+    libtins-dev \
     links \
     lsb-base \
     lsb-release \
@@ -46,7 +52,6 @@ RUN apt install -y \
     openssh-server \
     openssh-sftp-server \
     openssl \
-    paris-traceroute \
     pkg-config \
     python3-dev \
     python3-pip \
@@ -65,13 +70,13 @@ WORKDIR /tmp
 
 RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/ | \
         tac | \
-        grep -m 1 -o "iproute2-5[\.0-9]*[0-9]" | \
+        grep -m 1 -o "iproute2-6[\.0-9]*[0-9]" | \
         head -n 1` && \
     wget -q https://mirrors.edge.kernel.org/pub/linux/utils/net/iproute2/$FILE_NAME.tar.xz && \
     tar xf $FILE_NAME.tar.xz && \
     cd $FILE_NAME && \
     ./configure && \
-    make -j$(nproc) && \
+    make -j$(nproc --ignore=4) && \
     make install && \
     cd .. && \
     rm -r $FILE_NAME && \
@@ -81,7 +86,7 @@ RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir scapy 
+    python3 -m pip install --no-cache-dir scapy dublintraceroute tabulate
 
 RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
 

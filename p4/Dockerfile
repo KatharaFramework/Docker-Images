@@ -1,4 +1,5 @@
-FROM kathara/base:debian9
+FROM kathara/base
+LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 ARG DEBIAN_FRONTEND="noninteractive"
 RUN apt update
@@ -26,12 +27,12 @@ RUN apt install -y \
 	llvm \
 	protobuf-compiler
 
-WORKDIR /tmp
+WORKDIR /tmp 
 
 RUN git clone --recursive https://github.com/p4lang/p4c.git && \
     cd p4c && mkdir build && cd build && \
 	cmake .. && \
-	make -j$(nproc) && \
+	make -j$(nproc --ignore=4) && \
 	make install && ldconfig && \
 	cd .. && rm -Rf p4c/
 
@@ -39,14 +40,14 @@ RUN git clone --depth=1 -b v1.43.2 https://github.com/google/grpc.git && \
 	cd grpc && \
 	git submodule update --init --recursive && \
 	mkdir -p cmake/build && cd cmake/build && \
-	cmake ../.. && make -j$(nproc) && \
+	cmake ../.. && make -j$(nproc --ignore=4) && \
 	make install && ldconfig && \
 	cd ../.. && rm -Rf grpc && \
 	git clone https://github.com/p4lang/PI && \
  	cd PI && \
     git submodule update --init && \
 	./autogen.sh && \
-	./configure --with-proto && make -j$(nproc) && \ 
+	./configure --with-proto && make -j$(nproc --ignore=4) && \
 	make install && ldconfig && \
 	cd .. && rm -Rf PI
 
@@ -60,20 +61,21 @@ RUN git clone https://github.com/p4lang/behavioral-model && \
 	sed -i 's/sudo//g' ci/install-nnpy.sh && bash ci/install-nnpy.sh && \
 	./autogen.sh && \
 	./configure --with-pi && \
-	make -j$(nproc) && \
+	make -j$(nproc --ignore=4) && \
 	make install && ldconfig
-
+	
 RUN cd behavioral-model/tools && make install && \
 	cd / && mv behavioral-model/tools . && \
 	rm -Rf behavioral-model/
 
 RUN python3 -m pip install --no-cache-dir p4runtime && \
 	git clone https://github.com/p4lang/tutorials.git && \
-	mv tutorials/utils/p4runtime_lib /usr/local/lib/python3.7/site-packages/p4runtime_lib && \
+	mv tutorials/utils/p4runtime_lib /usr/local/lib/python$(python3 -c "import platform; v = platform.python_version_tuple(); print(v[0] + '.' + v[1])")/site-packages/p4runtime_lib && \
 	rm -Rf tutorials
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION python
 ENV PYTHONPATH $PYTHONPATH:/usr/local/lib/python3.7/site-packages/
 
-RUN apt clean && \
+RUN apt remove -y automake cmake g++ llvm && apt autoremove -y && \
+    apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/
