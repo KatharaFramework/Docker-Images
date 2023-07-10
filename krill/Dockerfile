@@ -1,16 +1,23 @@
 FROM kathara/base
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
-RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg
-
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/debian $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/nlnetlabs.list
-
 ARG DEBIAN_FRONTEND="noninteractive"
-RUN apt update && apt install -y krill haproxy
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y libssl-dev haproxy
+
+ENV PATH=$PATH:/root/.cargo/bin
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+
+RUN git clone https://github.com/NLnetLabs/krill && \
+    cd krill && cargo build --release --locked && \
+    cd .. && rm -Rf krill/
 
 RUN mkdir /etc/krill
 
-COPY krill-start /etc/init.d/krill-start
-COPY krill-stop /etc/init.d/krill-stop
+COPY start.sh /start.sh
 
-RUN chmod +x /etc/init.d/krill-start && chmod +x /etc/init.d/krill-stop
+RUN chmod +x /start.sh
+
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*

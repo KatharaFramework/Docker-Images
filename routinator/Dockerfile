@@ -1,9 +1,17 @@
 FROM kathara/frr
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
-RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg
-
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/debian $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/nlnetlabs.list > /dev/null
-
 ARG DEBIAN_FRONTEND="noninteractive"
-RUN apt update && apt install -y libssl-dev routinator
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y libssl-dev
+
+ENV PATH=$PATH:/root/.cargo/bin
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+
+RUN git clone https://github.com/NLnetLabs/routinator && \
+    cd routinator && cargo build --release --locked && \
+    cd .. && rm -Rf routinator/
+
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*

@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:12
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 ENV LANG C.UTF-8
@@ -45,9 +45,10 @@ RUN apt install -y \
     make \
     man-db \
     nano \
+    ndisc6 \
     net-tools \
     netbase \
-    netcat \
+    netcat-openbsd \
     openssh-client \
     openssh-server \
     openssh-sftp-server \
@@ -82,15 +83,18 @@ RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/
     rm -r $FILE_NAME && \
     rm $FILE_NAME.tar.xz
 
-RUN apt clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir scapy dublintraceroute tabulate
+RUN python3 -m pip install --no-cache-dir --upgrade --break-system-packages pip && \
+    python3 -m pip install --no-cache-dir --break-system-packages scapy dublintraceroute tabulate
 
 RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
 
+RUN wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py -O /usr/local/bin/systemctl && \
+    chmod +x /usr/local/bin/systemctl
+
 COPY .bashrc /root/.bashrc
+
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 WORKDIR /
 

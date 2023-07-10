@@ -58,7 +58,8 @@ RUN git clone https://github.com/p4lang/behavioral-model && \
     sed -i 's/sudo//g' ci/install-thrift.sh && bash ci/install-thrift.sh && \
 	sed -i 's/sudo//g' ci/install-nanomsg.sh && bash ci/install-nanomsg.sh && \
 	ldconfig && \
-	sed -i 's/sudo//g' ci/install-nnpy.sh && bash ci/install-nnpy.sh && \
+	sed -i 's/sudo//g' ci/install-nnpy.sh && \
+	sed -i 's/pip3 install/pip3 install --no-cache-dir --break-system-packages/g' ci/install-nnpy.sh && bash ci/install-nnpy.sh && \	
 	./autogen.sh && \
 	./configure --with-pi && \
 	make -j$(nproc --ignore=4) && \
@@ -68,13 +69,13 @@ RUN cd behavioral-model/tools && make install && \
 	cd / && mv behavioral-model/tools . && \
 	rm -Rf behavioral-model/
 
-RUN python3 -m pip install --no-cache-dir p4runtime && \
+RUN python3 -m pip install --no-cache-dir --break-system-packages p4runtime && \
 	git clone https://github.com/p4lang/tutorials.git && \
 	mv tutorials/utils/p4runtime_lib /usr/local/lib/python$(python3 -c "import platform; v = platform.python_version_tuple(); print(v[0] + '.' + v[1])")/site-packages/p4runtime_lib && \
 	rm -Rf tutorials
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION python
-ENV PYTHONPATH $PYTHONPATH:/usr/local/lib/python3.7/site-packages/
+ENV PYTHONPATH $PYTHONPATH:/usr/local/lib/python3.11/site-packages/
 
 RUN apt remove -y automake cmake g++ llvm && apt autoremove -y && \
     apt clean && \

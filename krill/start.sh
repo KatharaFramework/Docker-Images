@@ -1,4 +1,5 @@
 #!/bin/bash
+
 KRILL="krill"
 DATA_DIR="/etc/krill"
 KRILL_PID="$DATA_DIR/krill.pid"

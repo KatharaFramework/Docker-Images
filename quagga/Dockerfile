@@ -18,14 +18,16 @@ RUN git clone https://github.com/Quagga/quagga && \
     cd quagga && ./bootstrap.sh && \
     mv ../0002-lib-prefix.h-fix-build-with-gcc-10.patch . && \
     git apply 0002-lib-prefix.h-fix-build-with-gcc-10.patch && \
-    ./configure --enable-user=quagga --enable-group=quagga --enable-vty-group=quagga --prefix=/usr --sysconfdir=/etc/quagga -localstatedir=/var/state/quagga CFLAGS="-fcommon" && \
+    ./configure --enable-user=quagga --enable-group=quagga --enable-vty-group=quaggavty --prefix=/usr --sysconfdir=/etc/quagga -localstatedir=/var/state/quagga CFLAGS="-fcommon" && \
     make -j$(nproc --ignore=4) && make install && ldconfig && \
     cd .. && rm -Rf quagga/ && \
-    useradd -M quagga && usermod -L quagga
+    addgroup --system quaggavty > /dev/null && \
+    addgroup --system quagga > /dev/null && \
+    adduser --system --ingroup quagga --home /var/state/quagga --gecos "Quagga routing suite" --shell /bin/false quagga > /dev/null && \
+    mkdir -p /etc/quagga && chown quagga:quagga /etc/quagga
 
-RUN apt remove -y autoconf gawk texinfo && apt autoremove -y && \
-    apt clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+RUN mkdir -p /var/state/quagga
+RUN chown quagga:quagga /var/state/quagga
 
 RUN mkdir /var/log/quagga
 RUN chmod -R 777 /var/log/quagga
@@ -45,5 +47,6 @@ RUN chown root:root /etc/init.d/quagga
 RUN chmod 0755 /etc/init.d/quagga
 RUN ln -s /etc/init.d/quagga /etc/init.d/zebra
 
-RUN mkdir -p /var/state/quagga
-RUN chown quagga:quagga /var/state/quagga
+RUN apt remove -y autoconf gawk texinfo && apt autoremove -y && \
+    apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*

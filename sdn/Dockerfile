@@ -14,8 +14,8 @@ RUN apt install -y \
 	openvswitch-switch \
 	zlib1g-dev
 
-RUN python3 -m pip install --no-cache-dir eventlet==0.30.2
-RUN python3 -m pip install --no-cache-dir ryu
+RUN python3 -m pip install --no-cache-dir --break-system-packages eventlet==0.30.2
+RUN python3 -m pip install --no-cache-dir --break-system-packages ryu
 
 RUN /usr/bin/ovsdb-tool create /etc/openvswitch/conf.db
 RUN mkdir -pv /var/run/openvswitch/
