@@ -56,6 +56,7 @@ RUN apt install -y \
     pkg-config \
     python3-dev \
     python3-pip \
+    radvd \
     rsync \
     screen \
     sed \
