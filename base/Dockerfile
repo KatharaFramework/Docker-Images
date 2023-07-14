@@ -15,6 +15,7 @@ RUN apt install -y \
     arping \
     arptables \
     bind9 \
+    bind9-utils \
     bison \
     bridge-utils \
     build-essential \
@@ -31,6 +32,7 @@ RUN apt install -y \
     hping3 \
     ieee-data \
     ifupdown \
+    iperf3 \
     iptables \
     iputils-ping \
     iputils-tracepath \
@@ -60,6 +62,7 @@ RUN apt install -y \
     rsync \
     screen \
     sed \
+    systemd-userdbd \
     tar \
     tcpdump \
     telnet \
