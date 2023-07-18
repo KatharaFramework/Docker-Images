@@ -12,25 +12,38 @@ RUN apt install -y \
     libtool \
     texinfo
 
-COPY 0002-lib-prefix.h-fix-build-with-gcc-10.patch /
-
-RUN git clone https://github.com/Quagga/quagga && \
-    cd quagga && ./bootstrap.sh && \
-    mv ../0002-lib-prefix.h-fix-build-with-gcc-10.patch . && \
-    git apply 0002-lib-prefix.h-fix-build-with-gcc-10.patch && \
-    ./configure --enable-user=quagga --enable-group=quagga --enable-vty-group=quaggavty --prefix=/usr --sysconfdir=/etc/quagga -localstatedir=/var/state/quagga CFLAGS="-fcommon" && \
+RUN wget -q https://github.com/Quagga/quagga/releases/download/quagga-1.2.4/quagga-1.2.4.tar.gz && \
+    tar xfvz quagga-1.2.4.tar.gz && \
+    cd quagga-1.2.4 && \
+    ./configure CFLAGS="-fcommon" \
+                --enable-user=quagga \
+                --enable-group=quagga \
+                --enable-vty-group=quaggavty \
+                --prefix=/usr \
+                --sysconfdir=/etc/quagga \
+                --localstatedir=/var/state/quagga && \
     make -j$(nproc --ignore=4) && make install && ldconfig && \
-    cd .. && rm -Rf quagga/ && \
-    addgroup --system quaggavty > /dev/null && \
+    cd .. && rm -Rf quagga-1.2.4*
+
+RUN addgroup --system quaggavty > /dev/null && \
     addgroup --system quagga > /dev/null && \
     adduser --system --ingroup quagga --home /var/state/quagga --gecos "Quagga routing suite" --shell /bin/false quagga > /dev/null && \
-    mkdir -p /etc/quagga && chown quagga:quagga /etc/quagga
+    usermod -aG quaggavty quagga && \
+    install -m 755 -o quagga -g quagga -d /var/log/quagga && \
+    install -m 755 -o quagga -g quagga -d /var/state/quagga && \
+    install -m 775 -o quagga -g quaggavty -d /etc/quagga && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/zebra.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/bgpd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/ospfd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/ospf6d.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/isisd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/ripd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/ripngd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/pimd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/ldpd.conf && \
+    install -m 640 -o quagga -g quagga /dev/null /etc/quagga/nhrpd.conf && \
+    install -m 640 -o quagga -g quaggavty /dev/null /etc/quagga/vtysh.conf
 
-RUN mkdir -p /var/state/quagga
-RUN chown quagga:quagga /var/state/quagga
-
-RUN mkdir /var/log/quagga
-RUN chmod -R 777 /var/log/quagga
 RUN ln -s /var/log/quagga /var/log/zebra
 RUN ln -s /etc/quagga /etc/zebra
 

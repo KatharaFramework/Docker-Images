@@ -90,7 +90,7 @@ RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/
 RUN python3 -m pip install --no-cache-dir --upgrade --break-system-packages pip && \
     python3 -m pip install --no-cache-dir --break-system-packages scapy dublintraceroute tabulate
 
-RUN ln -s /etc/init.d/bind9 /etc/init.d/bind
+RUN ln -s /etc/init.d/named /etc/init.d/bind
 
 RUN wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py -O /usr/local/bin/systemctl && \
     chmod +x /usr/local/bin/systemctl
