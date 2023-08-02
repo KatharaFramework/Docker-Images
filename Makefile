@@ -1,9 +1,9 @@
 BUILDX=docker buildx build --platform linux/amd64,linux/arm64
 
-.PHONY: base quagga frr bird openbgpd krill routinator rift-python sdn p4 all pushall all-multi create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rift-python-multi sdn-multi p4-multi delete-builder
+.PHONY: base quagga frr bird openbgpd krill routinator rpki-client rift-python sdn p4 all pushall all-multi create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi delete-builder
 
-all: base quagga frr bird openbgpd krill routinator rift-python sdn p4
-all-multi: create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rift-python-multi sdn-multi p4-multi delete-builder
+all: base quagga frr bird openbgpd krill rpki-client routinator rift-python sdn p4
+all-multi: create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi delete-builder
 
 pushall:
 	docker push kathara/base
@@ -13,6 +13,7 @@ pushall:
 	docker push kathara/openbgpd
 	docker push kathara/krill
 	docker push kathara/routinator
+	docker push kathara/rpki-client
 	docker push kathara/rift-python
 	docker push kathara/sdn
 	docker push kathara/p4
@@ -35,8 +36,11 @@ openbgpd: base
 krill: base
 	docker build -t kathara/krill krill
 
-routinator: frr
+routinator: base
 	docker build -t kathara/routinator routinator
+
+rpki-client: base
+	docker build -t kathara/rpki-client rpki-client
 
 rift-python: base
 	docker build -t kathara/rift-python rift-python
@@ -65,8 +69,11 @@ openbgpd-multi: create-builder base-multi
 krill-multi: create-builder base-multi
 	$(BUILDX) -t kathara/krill --push krill
 
-routinator-multi: create-builder frr-multi
+routinator-multi: create-builder base-multi
 	$(BUILDX) -t kathara/routinator --push routinator
+
+rpki-client-multi: create-builder base-multi
+	$(BUILDX) -t kathara/rpki-client --push rpki-client
 
 rift-python-multi: create-builder base-multi
 	$(BUILDX) -t kathara/rift-python --push rift-python
