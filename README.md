@@ -15,7 +15,7 @@ Currently available images are:
 - `kathara/rift-python`: extends the base image adding [Routing In Fat Trees (RIFT) Python Implementation](https://github.com/brunorijsman/rift-python).
 - `kathara/sdn`: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
 - `kathara/p4`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
-- `kathara/openbgpd`: extend the base image adding the [Openbgpd daemon](https://www.openbgpd.org/).
+- `kathara/openbgpd`: extend the base image adding the [OpenBGPD daemon](https://www.openbgpd.org/).
 
 ## Building from source
 To build an image from source, run `make <image_name>` to build for the current architecture.
