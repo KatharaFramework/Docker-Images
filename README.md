@@ -9,13 +9,15 @@ Currently available images are:
 - `kathara/base`: used to build all other images. It contains a variety of network tools and some complex services like bind, apache, etc.
 - `kathara/quagga`: extends the base image adding [Quagga](https://www.nongnu.org/quagga/).
 - `kathara/frr`: extends the base image adding [FRRouting](https://frrouting.org/).
+- `kathara/openbgpd`: extend the base image adding the [OpenBGPD daemon](https://www.openbgpd.org/).
 - `kathara/krill`: extends the base image adding [Krill RPKI Certificate Authority](https://www.nlnetlabs.nl/projects/rpki/krill/).
-- `kathara/routinator`: extends the FRRouting image adding [Routinator RPKI Relying Party](https://www.nlnetlabs.nl/projects/rpki/routinator/).
+- `kathara/routinator`: extends the base image adding [Routinator RPKI Relying Party](https://www.nlnetlabs.nl/projects/rpki/routinator/).
+- `kathara/rpki-client`: extends the base image adding [OpenBGPD RPKI Client](https://www.rpki-client.org).
 - `kathara/bird`: extends the base image adding [BIRD](https://bird.network.cz/).
 - `kathara/rift-python`: extends the base image adding [Routing In Fat Trees (RIFT) Python Implementation](https://github.com/brunorijsman/rift-python).
 - `kathara/sdn`: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
 - `kathara/p4`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
-- `kathara/openbgpd`: extend the base image adding the [OpenBGPD daemon](https://www.openbgpd.org/).
+
 
 ## Building from source
 To build an image from source, run `make <image_name>` to build for the current architecture.
