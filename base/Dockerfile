@@ -46,6 +46,7 @@ RUN apt install -y \
     lsb-release \
     make \
     man-db \
+    mrt \
     nano \
     ndisc6 \
     net-tools \
