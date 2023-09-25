@@ -23,6 +23,7 @@ RUN apt install -y \
 	libjudy-dev \
 	libprotobuf-dev \
 	libssl-dev \
+    libelf-dev \
 	libtool \
 	llvm \
 	protobuf-compiler
