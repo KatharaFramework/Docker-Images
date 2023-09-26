@@ -98,4 +98,4 @@ fi
 #    . /etc/bash_completion
 #fi
 
-export VTYSH_PAGER=more
+export VTYSH_PAGER="less -EFX"
