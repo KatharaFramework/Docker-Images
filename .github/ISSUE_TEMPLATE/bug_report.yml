@@ -1,0 +1,45 @@
+name: Bug Report
+description: Report a bug in a Kathará Docker image
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a bug report, please search for the behaviour in the existing issues. 
+        
+        ---
+        
+        Thank you for taking the time to file a bug report. To address this bug as fast as possible, we need some information.
+  - type: input
+    id: image
+    attributes:
+      label: Image Name
+      description: "With which Kathará image did you encounter problems?"
+      placeholder: "kathara/frr"
+    validations:
+      required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: "What happened?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps To Reproduce
+      description: "Which steps do we need to take to reproduce this error? Attach also a network scenario to reproduce the error."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: "A description of what you expected to happen."
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: "Add any other context or screenshots about the feature request here."

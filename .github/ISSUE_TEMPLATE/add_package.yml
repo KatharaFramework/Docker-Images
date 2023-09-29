@@ -1,0 +1,44 @@
+name: Add Package To Image
+description: Suggest a package to add to a Kathará Docker image
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        
+        Thank you for contributing to Kathará with new ideas!
+  - type: input
+    id: image
+    attributes:
+      label: Image Name
+      description: "Which Kathará image you want to improve with the new package?"
+      placeholder: "kathara/frr"
+    validations:
+      required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Related Bug
+      description: "Is your package request related to a problem? Please describe."
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Package Description
+      description: "Why is it a good idea add this package to the Kathará image?"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution
+      description: "Describe the solution you would like."
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: "Describe alternative solutions you have considered."
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: "Add any other context or screenshots about the feature request here."
