@@ -32,7 +32,7 @@ WORKDIR /tmp
 
 RUN git clone --recursive https://github.com/p4lang/p4c.git && \
     cd p4c && mkdir build && cd build && \
-	cmake .. && \
+	cmake .. -DENABLE_EBPF=OFF -DENABLE_UBPF=OFF -DENABLE_DPDK=OFF -DENABLE_P4TC=OFF && \
 	make -j$(nproc --ignore=4) && \
 	make install && ldconfig && \
 	cd .. && rm -Rf p4c/
@@ -75,8 +75,9 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages p4runtime && \
 	mv tutorials/utils/p4runtime_lib /usr/local/lib/python$(python3 -c "import platform; v = platform.python_version_tuple(); print(v[0] + '.' + v[1])")/site-packages/p4runtime_lib && \
 	rm -Rf tutorials
 
+RUN echo "export PYTHONPATH=\$PYTHONPATH:/usr/local/lib/python$(python3 -c "import platform; v = platform.python_version_tuple(); print(v[0] + '.' + v[1])")/site-packages/" >> /root/.bashrc
+
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION python
-ENV PYTHONPATH $PYTHONPATH:/usr/local/lib/python3.11/site-packages/
 
 RUN apt remove -y automake cmake g++ llvm && apt autoremove -y && \
     apt clean && \
