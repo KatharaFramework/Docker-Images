@@ -13,3 +13,5 @@ RUN sed -i -e 's/service/no service/' /etc/frr/vtysh.conf \
 
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+COPY workaround.conf /etc/systemd/system/frr.service.d/workaround.conf
