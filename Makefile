@@ -91,7 +91,7 @@ p4-multi: create-builder base-multi
 	$(BUILDX) -t kathara/p4 --push p4
 
 bind-multi\:%: create-builder
-	$(BUILDX) -t kathara/bind:$* bind/$*
+	$(BUILDX) -t kathara/bind:$* --push bind/$*
 
 create-builder:
 	docker buildx create --name kat-builder --use
