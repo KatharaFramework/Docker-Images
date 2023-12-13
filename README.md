@@ -2,7 +2,7 @@
 
 This repository contains `Dockerfile`s used to build Kathará images. A list of the Docker images we provide can be found at [this page](https://hub.docker.com/u/kathara/) in the Docker Hub.
 Images are built both with `docker build` and with `docker buildx` for multi-architecture support.
-Currently our images are based on Debian 11 and are compiled for `amd64` and `arm64`.
+Currently, our images are based on Debian 12 and are compiled for `amd64` and `arm64`.
 If you need images based on other Linux distributions, feel free to create a PR with other Dockerfiles.
 
 Currently available images are:
@@ -17,7 +17,7 @@ Currently available images are:
 - `kathara/rift-python`: extends the base image adding [Routing In Fat Trees (RIFT) Python Implementation](https://github.com/brunorijsman/rift-python).
 - `kathara/sdn`: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
 - `kathara/p4`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
-- `kathara/bind`: a minimal image including just bind (lighter than `kathara/base`). Supports bind 9.18 (latest) and 9.16 (latest not forcing DNSSEC).
+- `kathara/bind`: a minimal image including just bind (lighter than `kathara/base`). Supports bind 9.18 (latest), 9.16 (latest not forcing DNSSEC) and 9.11.
 
 
 ## Building from source
