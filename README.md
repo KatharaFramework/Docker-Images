@@ -17,11 +17,16 @@ Currently available images are:
 - `kathara/rift-python`: extends the base image adding [Routing In Fat Trees (RIFT) Python Implementation](https://github.com/brunorijsman/rift-python).
 - `kathara/sdn`: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
 - `kathara/p4`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
+- `kathara/bind`: a minimal image including just bind (lighter than `kathara/base`). Supports bind 9.18 (latest) and 9.16 (latest not forcing DNSSEC).
 
 
 ## Building from source
 To build an image from source, run `make <image_name>` to build for the current architecture.
+
+**Beware**: images which support multiple versions can be build running `make <image_name>:<version>` (e.g., `make bind:9.16`).
+
 To build an image with `docker buildx` for multi-architectures use the command `make <image_name>-multi`.
+
 **Beware**: building images with `docker buildx` automatically push the images on the Kathará Docker Hub. If you are not allowed to push, change the `Makefile` before running `make`.
 
 Example: `make quagga` or `make quagga-multi`.
