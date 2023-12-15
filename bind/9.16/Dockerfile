@@ -21,7 +21,7 @@ RUN apt install -y \
 	iputils-ping \
 	less \
 	links \
-    man-db \
+	man-db \
 	nano \
 	net-tools \
 	netbase \
@@ -56,8 +56,6 @@ RUN FILE_NAME=`wget -q -O - https://mirrors.edge.kernel.org/pub/linux/utils/net/
 	cd .. && \
 	rm -r $FILE_NAME && \
 	rm $FILE_NAME.tar.xz
-
-RUN ln -s /etc/init.d/named /etc/init.d/bind
 
 RUN wget https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl3.py -O /usr/local/bin/systemctl && \
 	chmod +x /usr/local/bin/systemctl
