@@ -2,8 +2,8 @@ BUILDX=docker buildx build --platform linux/amd64,linux/arm64
 
 .PHONY: base quagga frr bird openbgpd krill routinator rpki-client rift-python sdn p4 all pushall all-multi create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi delete-builder
 
-all: base quagga frr bird openbgpd krill rpki-client routinator rift-python sdn p4
-all-multi: create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi delete-builder
+all: base quagga frr bird openbgpd krill rpki-client routinator rift-python sdn p4 bind\:9.18 bind\:9.16 bind\:9.11
+all-multi: create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi bind-multi\:9.18 bind-multi\:9.16 bind-multi\:9.11 delete-builder
 
 pushall:
 	docker push kathara/base
@@ -17,6 +17,9 @@ pushall:
 	docker push kathara/rift-python
 	docker push kathara/sdn
 	docker push kathara/p4
+	docker push kathara/bind:9.18
+	docker push kathara/bind:9.16
+	docker push kathara/bind:9.11
 
 base:
 	docker build -t kathara/base base
@@ -51,6 +54,9 @@ sdn: base
 p4: base
 	docker build -t kathara/p4 p4
 
+bind\:%:
+	docker build -t kathara/bind:$* bind/$*
+
 base-multi: create-builder
 	$(BUILDX) -t kathara/base --push base
 
@@ -83,6 +89,9 @@ sdn-multi: create-builder base-multi
 
 p4-multi: create-builder base-multi
 	$(BUILDX) -t kathara/p4 --push p4
+
+bind-multi\:%: create-builder
+	$(BUILDX) -t kathara/bind:$* --push bind/$*
 
 create-builder:
 	docker buildx create --name kat-builder --use
