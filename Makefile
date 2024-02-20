@@ -48,6 +48,9 @@ rift-python: base
 sdn: base
 	docker build -t kathara/sdn sdn
 
+pox: base
+	docker build -t kathara/pox pox
+
 p4: base
 	docker build -t kathara/p4 p4
 
@@ -80,6 +83,9 @@ rift-python-multi: create-builder base-multi
 
 sdn-multi: create-builder base-multi
 	$(BUILDX) -t kathara/sdn --push sdn
+
+pox-multi: create-builder base-multi
+	$(BUILDX) -t kathara/pox --push pox
 
 p4-multi: create-builder base-multi
 	$(BUILDX) -t kathara/p4 --push p4
