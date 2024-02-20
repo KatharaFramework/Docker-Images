@@ -16,6 +16,8 @@ RUN wget https://www.python.org/ftp/python/3.9.17/Python-3.9.17.tar.xz && \
     make -j 8 altinstall && \
     ldconfig /usr/local/share/python3.9
 
+RUN rm Python-3.9.17.tar.xz
+
 # Install Python3-networkx
 RUN python3.9 -m pip install networkx
 
