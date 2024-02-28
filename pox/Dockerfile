@@ -24,3 +24,10 @@ RUN python3.9 -m pip install networkx
 # Clone and set permissions for pox
 RUN git clone https://github.com/noxrepo/pox.git && \
     chmod +x /pox/pox.py
+
+# Remove not needed libraries
+RUN apt remove -y zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libsqlite3-dev libreadline-dev libffi-dev curl libbz2-dev
+
+# Clean up caches/other
+RUN apt clean && \
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
