@@ -18,6 +18,7 @@ Currently available images are:
 - `kathara/sdn`: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
 - `kathara/p4`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
 - `kathara/pox`: extends the base image adding [POX](https://github.com/noxrepo/pox) (Python based SDN Controller) and python3-networkx.
+- `kathara/scion`: extends the base image adding [SCION](https://scion-architecture.net) (Scalability, Control, and Isolation On Next-Generation Networks).
 
 
 ## Building from source
