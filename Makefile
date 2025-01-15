@@ -94,7 +94,7 @@ pox-multi: create-builder base-multi
 p4-multi: create-builder base-multi
 	$(BUILDX) -t kathara/p4 --push p4
 
-scion-multi: create-builder
+scion-multi: create-builder base-multi
 	$(BUILDX) -t kathara/scion --push scion
 
 create-builder:

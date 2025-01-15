@@ -4,8 +4,10 @@ LABEL org.opencontainers.image.authors="Network Security Group, ETH Zurich <nets
 # Install SCION from GitHub release
 ARG DEBIAN_FRONTEND="noninteractive"
 ARG TARGETARCH
-RUN cd /tmp/ && \
-    wget https://github.com/scionproto/scion/releases/download/v0.12.0/scion_0.12.0_deb_$TARGETARCH.tar.gz && \
+
+WORKDIR /tmp
+
+RUN wget https://github.com/scionproto/scion/releases/download/v0.12.0/scion_0.12.0_deb_$TARGETARCH.tar.gz && \
     tar xfz scion_0.12.0_deb_$TARGETARCH.tar.gz && \
     apt install ./scion*.deb && \
     apt clean && \
