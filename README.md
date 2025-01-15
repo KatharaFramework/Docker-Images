@@ -36,6 +36,8 @@ Currently available images are:
     - Available tags: `kathara/pox:latest` (Debian 12).
 - `kathara/bmv2`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
     - Available tags: `kathara/bmv2:latest` (Debian 12).
+- `kathara/scion`: extends the base image adding [SCION](https://scion-architecture.net) (Scalability, Control, and Isolation On Next-Generation Networks).
+    - Available tags: `kathara/scion:latest` (Debian 12).
 
 ## Building from source
 To build an image from source, run `make build_<image_name>` to build for the current architecture. `<image_name>` is one of the folders of the repository.

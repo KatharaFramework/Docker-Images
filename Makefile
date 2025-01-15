@@ -1,9 +1,9 @@
 BUILDX=docker buildx build --platform linux/amd64,linux/arm64
 
-.PHONY: build_common build_base build_quagga build_frr build_bird build_openbgpd build_krill build_routinator build_rpki-client build_rift-python build_openvswitch build_pox build_bmv2 build_multi_common build_multi_base build_multi_quagga build_multi_frr build_multi_bird build_multi_openbgpd build_multi_krill build_multi_routinator build_multi_rpki-client build_multi_rift-python build_multi_openvswitch build_multi_pox build_multi_bmv2 all all-multi create-builder delete-builder
+.PHONY: build_common build_base build_quagga build_frr build_bird build_openbgpd build_krill build_routinator build_rpki-client build_rift-python build_openvswitch build_pox build_bmv2 build_scion build_multi_common build_multi_base build_multi_quagga build_multi_frr build_multi_bird build_multi_openbgpd build_multi_krill build_multi_routinator build_multi_rpki-client build_multi_rift-python build_multi_openvswitch build_multi_pox build_multi_bmv2 build_multi_scion all all-multi create-builder delete-builder
 
-all: build_common build_base build_quagga build_frr build_bird build_openbgpd build_krill build_rpki-client build_routinator build_rift-python build_openvswitch build_pox build_bmv2
-all-multi: create-builder build_multi_common build_multi_base build_multi_quagga build_multi_frr build_multi_bird build_multi_openbgpd build_multi_krill build_multi_routinator build_multi_rpki-client build_multi_rift-python build_multi_openvswitch build_multi_pox build_multi_bmv2 delete-builder
+all: build_common build_base build_quagga build_frr build_bird build_openbgpd build_krill build_rpki-client build_routinator build_rift-python build_openvswitch build_pox build_bmv2 build_scion
+all-multi: create-builder build_multi_common build_multi_base build_multi_quagga build_multi_frr build_multi_bird build_multi_openbgpd build_multi_krill build_multi_routinator build_multi_rpki-client build_multi_rift-python build_multi_openvswitch build_multi_pox build_multi_bmv2 build_multi_scion delete-builder
 
 build_common:
 	for x in common/Dockerfile*; do \
