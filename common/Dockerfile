@@ -69,6 +69,7 @@ RUN apt update && \
 	netcat-openbsd \
 	openssh-client \
 	openssl \
+	procps \
 	python3-pip \
 	radvd \
 	rsync \
@@ -80,7 +81,9 @@ RUN apt update && \
 	telnet \
 	tmux \
 	traceroute \
+	tree \
 	wget && \
+	apt-cache show iproute2 | dpkg --merge-avail && \
 	apt clean && \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
@@ -91,8 +94,14 @@ RUN	chmod +x /usr/local/bin/systemctl
 COPY --from=iproute /tmp/output/sbin /sbin
 COPY --from=iproute /tmp/output/usr /usr
 
+# Manually flagging iproute2 as installed in the dpkg database so that it is not overwritten by the apt version
+RUN echo "iproute2 install" | dpkg --set-selections && \
+	sed -i "/^Package: iproute2$/,/^$/ s/Status: install ok not-installed/Status: install ok installed\nVersion: $(ip -V | cut -d ',' -f2 | cut -d '-' -f 2)/" /var/lib/dpkg/status
+
 RUN python3 -m pip install --no-cache-dir --upgrade --break-system-packages pip && \
 	python3 -m pip install --no-cache-dir --break-system-packages scapy tabulate
+
+RUN mkdir /var/kathara
 
 WORKDIR /
 

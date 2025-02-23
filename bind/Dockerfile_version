@@ -1,0 +1,32 @@
+FROM debian:12 AS bind
+LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
+
+ARG DEBIAN_FRONTEND="noninteractive"
+RUN apt update && \
+	apt install -y --no-install-recommends \
+	build-essential \
+	ca-certificates \
+	git
+
+WORKDIR /tmp
+
+RUN	mkdir output
+
+RUN	git clone https://gitlab.isc.org/isc-projects/bind9.git && \
+	cd bind9 && \
+	git checkout v9.11.37 && \
+	./configure --without-python --without-openssl --prefix=/usr --localstatedir=/var --sysconfdir=/etc/bind && \
+	sed -i 's|^DESTDIR =|DESTDIR = /tmp/output|' Makefile && \
+	make -j$(nproc) && \
+	make install
+
+# Build the final image
+FROM kathara/common:12
+LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
+
+COPY --from=bind /tmp/output/etc /etc
+COPY --from=bind /tmp/output/usr /usr
+
+RUN mkdir -p /etc/bind
+
+COPY bind9.service /etc/systemd/system/bind9.service
