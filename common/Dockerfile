@@ -1,7 +1,7 @@
 # Stage to build latest iproute release
 FROM debian:12 AS iproute
 
-ARG DEBIAN_FRONTEND="noninteractive"
+ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt update && \
 	apt install -y --no-install-recommends \
 	bison \
@@ -19,7 +19,7 @@ WORKDIR /tmp
 RUN	mkdir output && \
 	git clone https://git.kernel.org/pub/scm/network/iproute2/iproute2.git && \
 	cd iproute2 && \
-	git checkout $(git describe --tags --abbrev=0) && \
+	git checkout tags/$(git describe --tags --abbrev=0) && \
 	./configure && \
 	make -j$(nproc) && \
 	DESTDIR=/tmp/output make install
@@ -33,7 +33,7 @@ ENV LC_ALL="C.UTF-8"
 
 COPY .bashrc /root/.bashrc
 
-ARG DEBIAN_FRONTEND="noninteractive"
+ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt update && \
 	apt upgrade -y && \
 	apt install --no-install-recommends -y \

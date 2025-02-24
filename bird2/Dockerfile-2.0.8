@@ -1,0 +1,11 @@
+FROM kathara/common:latest
+LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
+
+RUN wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC4BF02689F87C61287782DCCC928FEB3B3E94585" | gpg --dearmor -o /usr/share/keyrings/bird-pkg.gpg && \
+	echo "deb [signed-by=/usr/share/keyrings/bird-pkg.gpg] https://ppa.launchpadcontent.net/cz.nic-labs/bird/ubuntu groovy main" | tee /etc/apt/sources.list.d/bird.list
+
+RUN apt update && \
+	apt install  -y --no-install-recommends \
+	bird2=2.0.8-cznic.4~ubuntu20.10.1~ppa1 && \
+	apt clean && \
+	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
