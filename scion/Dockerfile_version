@@ -1,12 +1,12 @@
 FROM kathara/common:latest
 LABEL org.opencontainers.image.authors="Network Security Group, ETH Zurich <netsec.ethz.ch>"
 
-# Install SCION from GitHub release
 ARG TARGETARCH
 ARG VERSION
 
 WORKDIR /tmp
 
+# Install SCION from GitHub release
 RUN wget https://github.com/scionproto/scion/releases/download/v${VERSION}/scion_${VERSION}_deb_$TARGETARCH.tar.gz && \
 	tar xfz scion_* && \
 	apt install ./scion*.deb && \

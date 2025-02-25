@@ -1,13 +1,28 @@
+# Stage to build Krill
+FROM rust:latest AS krill-build
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update && apt upgrade -y && \
+    apt install -y libssl-dev git
+
+WORKDIR /tmp 
+
+RUN git clone https://github.com/NLnetLabs/krill.git && \
+    cd krill && \
+    cargo build --release --locked
+
+# Build the final image
 FROM kathara/common:latest
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
-RUN curl -fsSL https://packages.nlnetlabs.nl/aptkey.asc | gpg --dearmor -o /usr/share/keyrings/nlnetlabs-archive-keyring.gpg && \
-	echo \
-	"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/nlnetlabs-archive-keyring.gpg] https://packages.nlnetlabs.nl/linux/debian \
-	$(lsb_release -cs) main" | tee /etc/apt/sources.list.d/nlnetlabs.list > /dev/null
-
-RUN apt update && \
-	apt install  -y --no-install-recommends \
-	krill && \
+RUN apt update && apt upgrade -y && \ 
+    apt install -y libssl3 haproxy && \
 	apt clean && \
-	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+COPY --from=krill-build /tmp/krill/target/release/krill /usr/local/bin/krill
+COPY --from=krill-build /tmp/krill/target/release/krillc /usr/local/bin/krillc
+COPY krill.service /usr/lib/systemd/system/krill.service
+
+RUN mkdir /etc/krill

@@ -5,7 +5,7 @@ RUN wget -qO - "https://pkg.labs.nic.cz/gpg" | gpg --dearmor -o /usr/share/keyri
 	echo "deb [signed-by=/usr/share/keyrings/bird-pkg.gpg] https://pkg.labs.nic.cz/bird3 bookworm main" | tee /etc/apt/sources.list.d/bird.list
 
 RUN apt update && \
-	apt install  -y --no-install-recommends \
+	apt install -y --no-install-recommends \
 	bird3 && \
 	apt clean && \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*

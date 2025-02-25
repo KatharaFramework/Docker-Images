@@ -5,7 +5,7 @@ RUN wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF23C5A6C
 	echo "deb [signed-by=/usr/share/keyrings/deadsnakes.gpg] https://ppa.launchpadcontent.net/deadsnakes/ppa/ubuntu jammy main " | tee /etc/apt/sources.list.d/deadsnakes.list
 
 RUN apt update && \
-	apt install  -y --no-install-recommends \
+	apt install -y --no-install-recommends \
 	python3.9 \
 	python3.9-distutils && \
 	apt clean && \

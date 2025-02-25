@@ -36,7 +36,7 @@ COPY .bashrc /root/.bashrc
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt update && \
 	apt upgrade -y && \
-	apt install --no-install-recommends -y \
+	apt install -y --no-install-recommends \
 	apt-utils \
 	apt-transport-https \
 	arping \
@@ -60,6 +60,7 @@ RUN apt update && \
 	links \
 	lsb-base \
 	lsb-release \
+	make \
 	man-db \
 	mtr-tiny \
 	nano \
