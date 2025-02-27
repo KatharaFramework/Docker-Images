@@ -18,3 +18,11 @@ RUN mv /usr/lib/systemd/system/scion-router\@.service /usr/lib/systemd/system/sc
     sed -i 's/%i/br/g' /usr/lib/systemd/system/scion-router.service && \
     mv /usr/lib/systemd/system/scion-control\@.service /usr/lib/systemd/system/scion-control.service && \
     sed -i 's/%i/cs/g' /usr/lib/systemd/system/scion-control.service
+
+# Adjust scion-ip-gateway.service for compatibility with docker environment
+RUN sed -i 's/^User=scion/User=root/' /usr/lib/systemd/system/scion-ip-gateway.service && \
+    sed -i 's/^Group=scion/Group=root/' /usr/lib/systemd/system/scion-ip-gateway.service && \
+    sed -i '/^AmbientCapabilities=cap_net_admin/d' /usr/lib/systemd/system/scion-ip-gateway.service && \
+    sed -i '/^\[Service\]/a ExecStartPre=\/bin\/bash -c '"'"'mkdir -p /dev/net; mknod /dev/net/tun c 10 200; chmod 600 /dev/net/tun'"'"'' /usr/lib/systemd/system/scion-ip-gateway.service
+
+WORKDIR /
