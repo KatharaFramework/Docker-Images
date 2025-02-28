@@ -1,4 +1,5 @@
 # Stage to build Routinator
+# Cannot use the apt package since it is only amd64
 FROM rust:latest AS routinator-build
 
 ENV DEBIAN_FRONTEND=noninteractive

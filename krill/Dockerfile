@@ -1,4 +1,5 @@
 # Stage to build Krill
+# Cannot use the apt package since it is only amd64
 FROM rust:latest AS krill-build
 
 ENV DEBIAN_FRONTEND=noninteractive
