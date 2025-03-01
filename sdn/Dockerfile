@@ -20,5 +20,9 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages ryu
 RUN /usr/bin/ovsdb-tool create /etc/openvswitch/conf.db
 RUN mkdir -pv /var/run/openvswitch/
 
+RUN ln -s /bin/true /usr/local/sbin/modprobe
+
+ENV OVS_SBINDIR="/usr/local/sbin"
+
 RUN apt clean && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
