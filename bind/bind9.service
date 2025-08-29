@@ -8,7 +8,7 @@ Before=nss-lookup.target
 [Service]
 Type=notify
 EnvironmentFile=-/etc/default/named
-ExecStart=/usr/sbin/named -f $OPTIONS
+ExecStart=/usr/sbin/named $OPTIONS
 ExecReload=/usr/sbin/rndc reload
 ExecStop=/usr/sbin/rndc stop
 Restart=on-failure

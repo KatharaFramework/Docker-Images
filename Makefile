@@ -6,7 +6,7 @@ BUILDX=$(DOCKER) buildx
 BUILDX_BUILD=$(BUILDX) build --platform linux/amd64,linux/arm64
 
 versions_frr=9 10
-versions_bind=9.11.37
+versions_bind=9.11.5
 versions_scion=0.12.0
 
 retags_openvswitch=sdn
