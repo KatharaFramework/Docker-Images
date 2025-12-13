@@ -1,4 +1,4 @@
-FROM kathara/common:latest
+FROM kathara/core:latest
 LABEL org.opencontainers.image.authors="Network Security Group, ETH Zurich <netsec.ethz.ch>"
 
 ARG TARGETARCH

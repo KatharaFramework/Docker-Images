@@ -1,4 +1,4 @@
-FROM kathara/common:latest
+FROM kathara/core:latest
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 RUN wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xF23C5A6CF475977595C89F51BA6932366A755776" | gpg --dearmor -o /usr/share/keyrings/deadsnakes.gpg && \

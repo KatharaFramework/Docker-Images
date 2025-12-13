@@ -5,22 +5,22 @@ FROM rust:latest AS krill-build
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt upgrade -y && \
-    apt install -y libssl-dev git
+	apt install -y libssl-dev git
 
 WORKDIR /tmp 
 
 RUN git clone https://github.com/NLnetLabs/krill.git && \
-    cd krill && \
-    cargo build --release --locked
+	cd krill && \
+	cargo build --release --locked
 
 # Build the final image
-FROM kathara/common:latest
+FROM kathara/core:latest
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 RUN apt update && apt upgrade -y && \ 
-    apt install -y libssl3 haproxy && \
+	apt install -y libssl3 haproxy && \
 	apt clean && \
-    rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 COPY --from=krill-build /tmp/krill/target/release/krill /usr/local/bin/krill
 COPY --from=krill-build /tmp/krill/target/release/krillc /usr/local/bin/krillc

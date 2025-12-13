@@ -39,7 +39,7 @@ FROM debian:12 AS bm
 ENV DEBIAN_FRONTEND="noninteractive"
 
 RUN echo "deb http://deb.debian.org/debian bullseye main" | tee /etc/apt/sources.list.d/bullseye.list && \
- 	apt update && \
+	apt update && \
 	apt install -y --no-install-recommends \
 	automake \
 	bison \
@@ -87,8 +87,8 @@ RUN git clone --depth=1 -b v1.43.2 https://github.com/google/grpc.git && \
 	make install
 
 RUN git clone https://github.com/p4lang/PI && \
- 	cd PI && \
-    git submodule update --init && \
+	cd PI && \
+	git submodule update --init && \
 	./autogen.sh && \
 	./configure --with-proto && \
 	make -j$(nproc --ignore=4) && \
@@ -101,8 +101,8 @@ RUN git clone https://github.com/p4lang/behavioral-model && \
 	cd behavioral-model && \
 	./autogen.sh && \
 	./configure --with-pi && \
- 	make -j$(nproc --ignore=4) && \
- 	DESTDIR=/tmp/output make install && \
+	make -j$(nproc --ignore=4) && \
+	DESTDIR=/tmp/output make install && \
 	cd tools && DESTDIR=/tmp/output make install
 
 RUN pip wheel nnpy cffi
@@ -125,14 +125,14 @@ RUN git clone https://github.com/p4lang/tutorials.git && \
 	mv tutorials/utils/p4runtime_lib /tmp/output
 
 # Build the final image
-FROM kathara/common:latest
+FROM kathara/core:latest
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION="python"
 ENV PYTHONPATH="$PYTHONPATH:/usr/local/lib/python3.11/site-packages/"
 
 RUN echo "deb http://deb.debian.org/debian bullseye main" | tee /etc/apt/sources.list.d/bullseye.list && \
- 	apt update && \
+	apt update && \
 	apt install -y --no-install-recommends \
 	libboost-filesystem1.81.0 \
 	libboost-iostreams1.81.0 \

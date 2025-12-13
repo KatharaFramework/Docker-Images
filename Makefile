@@ -12,14 +12,14 @@ versions_scion=0.12.0
 retags_openvswitch=sdn
 retags_bmv2=p4
 
-all: build_apache build_base build_bind build_bird build_bird2 build_bird3 build_bmv2 build_common build_frr build_krill build_openbgpd build_openvswitch build_pox build_quagga build_rift-python build_routinator build_rpki-client build_scion
-all-multi: build_multi_apache build_multi_base build_multi_bind build_multi_bird build_multi_bird2 build_multi_bird3 build_multi_bmv2 build_multi_common build_multi_frr build_multi_krill build_multi_openbgpd build_multi_openvswitch build_multi_pox build_multi_quagga build_multi_rift-python build_multi_routinator build_multi_rpki-client build_multi_scion
+all: build_apache build_base build_bind build_bird build_bird2 build_bird3 build_bmv2 build_core build_frr build_krill build_openbgpd build_openvswitch build_pox build_quagga build_rift-python build_routinator build_rpki-client build_scion
+all-multi: build_multi_apache build_multi_base build_multi_bind build_multi_bird build_multi_bird2 build_multi_bird3 build_multi_bmv2 build_multi_core build_multi_frr build_multi_krill build_multi_openbgpd build_multi_openvswitch build_multi_pox build_multi_quagga build_multi_rift-python build_multi_routinator build_multi_rpki-client build_multi_scion
 
-build_common:
-	echo "Building 'kathara/common' with tag 'latest'..."
-	$(DOCKER_BUILD) -t kathara/common common; \
+build_core:
+	echo "Building 'kathara/core' with tag 'latest'..."
+	$(DOCKER_BUILD) -t kathara/core core; \
 
-build_%: build_common
+build_%: build_core
 	latest_found=0
 	if [ -f $*/Dockerfile ]; then \
 		echo "Building 'kathara/$*' with tag 'latest'..."; \
@@ -47,11 +47,11 @@ build_%: build_common
 		$(DOCKER_BUILD) -f $$x -t kathara/$*:$$tag $*; \
 	done;
 
-build_multi_common: create-builder
-	echo "Building 'kathara/common' with tag 'latest'..."
-	$(BUILDX_BUILD) -t kathara/common --push common
+build_multi_core: create-builder
+	echo "Building 'kathara/core' with tag 'latest'..."
+	$(BUILDX_BUILD) -t kathara/core --push core
 
-build_multi_%: build_multi_common
+build_multi_%: build_multi_core
 	latest_found=0
 	if [ -f $*/Dockerfile ]; then \
 		echo "Building 'kathara/$*' with tag 'latest'..."; \
