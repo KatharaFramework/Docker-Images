@@ -50,6 +50,7 @@ RUN apt update && \
 	git \
 	gnupg \
 	hping3 \
+	htop \
 	iperf3 \
 	iptables \
 	iputils-ping \
