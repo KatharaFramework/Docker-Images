@@ -24,4 +24,4 @@ COPY quagga /etc/init.d/quagga
 RUN chown root:root /etc/init.d/quagga
 RUN chmod 0755 /etc/init.d/quagga
 
-RUN echo "kathara/quagga image (this image) is deprecated. It will not be updated in the future." > /var/kathara/quagga_deprecated
+RUN echo "[WARNING] \`kathara/quagga\` image is deprecated. It will not be updated in the future." > /var/kathara/quagga_deprecated

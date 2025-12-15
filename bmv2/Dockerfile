@@ -124,6 +124,8 @@ RUN mkdir /tmp/output
 RUN git clone https://github.com/p4lang/tutorials.git && \
 	mv tutorials/utils/p4runtime_lib /tmp/output
 
+RUN pip wheel protobuf==3.18.1 googleapis-common-protos==1.54.0 p4runtime
+
 # Build the final image
 FROM kathara/core:latest
 LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
@@ -148,7 +150,9 @@ COPY --from=p4c /tmp/output/usr /usr
 COPY --from=bm /tmp/output/usr /usr
 COPY --from=bm /tmp/*.whl /tmp
 COPY --from=p4runtime /tmp/output/p4runtime_lib /usr/local/lib/python3.11/site-packages/p4runtime_lib
+COPY --from=p4runtime /tmp/output/*.whl /tmp
 
+RUN python3 -m pip install --no-cache-dir --break-system-packages /tmp/protobuf*.whl /tmp/googleapis_common_protos*.whl
 RUN python3 -m pip install --no-cache-dir --break-system-packages thrift /tmp/*.whl 
 RUN rm -rf /tmp/*.whl
 
