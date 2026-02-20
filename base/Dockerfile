@@ -21,6 +21,7 @@ RUN apt install -y \
     build-essential \
     curl \
     diffutils \
+    dnsmasq \
     dnsutils \
     dublin-traceroute  \
     ethtool \
