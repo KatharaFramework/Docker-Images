@@ -14,5 +14,3 @@ RUN apt install -y --no-install-recommends \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 RUN ln -s /etc/init.d/named /etc/init.d/bind
-
-RUN echo "[WARNING] \`kathara/base\` image is deprecated. It will not be updated in the future." > /var/kathara/base_deprecated
