@@ -12,6 +12,8 @@ RUN apt update && \
 	libbpf-dev \
 	libcap-dev \
 	libmnl-dev \
+    openssh-server \
+	openssh-sftp-server \
 	pkg-config
 
 WORKDIR /tmp

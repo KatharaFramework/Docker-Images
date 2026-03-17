@@ -12,8 +12,7 @@ Currently available images are:
     - Available tags: `kathara/apache:latest`.
 - `kathara/bind`: extends the core image by adding the [BIND9](https://bind9.net) DNS daemon.
     - Available tags: `kathara/bind:9.11.5` (v9.11.5) and `kathara/bind:latest`.
-- `kathara/base`: extends the core image by adding BIND9 and Apache.
-	- This image is **DEPRECATED**.
+- `kathara/base`: extends the core image by adding BIND9, Apache and dnsmasq.
     - Available tags: `kathara/base:latest`.
 - `kathara/bird`: extends the core image adding [BIRD](https://bird.network.cz/).
     - Available tags: `kathara/bird:latest` (v1.6.8).
@@ -23,6 +22,8 @@ Currently available images are:
     - Available tags: `kathara/bird3:latest`.
 - `kathara/bmv2`: extends the core image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
     - Available tags: `kathara/bmv2:latest` (also retagged as `kathara/p4:latest`).
+- `kathara/dnsmasq`: extends the core image adding [dnsmasq](https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html).
+    - Available tags: `kathara/dnsmasq:latest`.
 - `kathara/frr`: extends the core image adding [FRRouting](https://frrouting.org/).
     - Available tags: `kathara/frr:9`, `kathara/frr:10`, and `kathara/frr:latest`.
 - `kathara/krill`: extends the core image adding [Krill RPKI Certificate Authority](https://www.nlnetlabs.nl/projects/rpki/krill/).

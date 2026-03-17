@@ -8,8 +8,7 @@ RUN apt install -y --no-install-recommends \
 	apache2-bin \
 	bind9 \
 	bind9-utils \
-	openssh-server \
-	openssh-sftp-server && \
+    dnsmasq && \
 	apt clean && \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
