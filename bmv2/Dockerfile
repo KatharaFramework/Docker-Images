@@ -6,10 +6,11 @@ RUN apt update && \
 	apt install -y --no-install-recommends \
 	automake \
 	bison \
-	build-essential \
 	ca-certificates \
 	cmake \
 	flex \
+    gcc-11 \
+    g++-11 \
 	git \
 	libtool \
 	libgc-dev \
@@ -18,12 +19,16 @@ RUN apt update && \
 	libboost-iostreams1.81-dev \
 	libboost-graph1.81-dev \
 	llvm \
+    make \
 	python3 \
 	pkg-config
 
 WORKDIR /tmp 
 
 RUN mkdir /tmp/output
+
+ENV CXX=g++-11
+ENV CC=gcc-11
 
 RUN git clone --recursive https://github.com/p4lang/p4c.git && \
 	cd p4c && \
@@ -124,7 +129,7 @@ RUN mkdir /tmp/output
 RUN git clone https://github.com/p4lang/tutorials.git && \
 	mv tutorials/utils/p4runtime_lib /tmp/output
 
-RUN pip wheel protobuf==3.18.1 googleapis-common-protos==1.54.0 p4runtime
+RUN pip wheel --wheel-dir=/tmp/output protobuf==3.18.1 googleapis-common-protos==1.54.0 p4runtime
 
 # Build the final image
 FROM kathara/core:latest
@@ -136,6 +141,7 @@ ENV PYTHONPATH="$PYTHONPATH:/usr/local/lib/python3.11/site-packages/"
 RUN echo "deb http://deb.debian.org/debian bullseye main" | tee /etc/apt/sources.list.d/bullseye.list && \
 	apt update && \
 	apt install -y --no-install-recommends \
+    build-essential \
 	libboost-filesystem1.81.0 \
 	libboost-iostreams1.81.0 \
 	libboost-program-options1.81.0 \
