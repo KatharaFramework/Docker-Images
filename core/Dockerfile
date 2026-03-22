@@ -12,8 +12,6 @@ RUN apt update && \
 	libbpf-dev \
 	libcap-dev \
 	libmnl-dev \
-    openssh-server \
-	openssh-sftp-server \
 	pkg-config
 
 WORKDIR /tmp
@@ -72,6 +70,8 @@ RUN apt update && \
 	netbase \
 	netcat-openbsd \
 	openssh-client \
+    openssh-server \
+	openssh-sftp-server \
 	openssl \
 	procps \
 	python3-pip \
