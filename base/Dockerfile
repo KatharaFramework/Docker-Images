@@ -13,3 +13,5 @@ RUN apt install -y --no-install-recommends \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
 RUN ln -s /etc/init.d/named /etc/init.d/bind
+
+COPY apache2.service /usr/lib/systemd/system/apache2.service

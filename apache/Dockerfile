@@ -8,3 +8,5 @@ RUN apt update && \
 	apache2-bin && \
 	apt clean && \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
+
+COPY apache2.service /usr/lib/systemd/system/apache2.service
