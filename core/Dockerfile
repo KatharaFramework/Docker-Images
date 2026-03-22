@@ -40,6 +40,7 @@ RUN apt update && \
 	apt-utils \
 	apt-transport-https \
 	arping \
+    arptables \
 	bridge-utils \
 	curl \
 	diffutils \
@@ -51,6 +52,7 @@ RUN apt update && \
 	gnupg \
 	hping3 \
 	htop \
+    ifupdown \
 	iperf3 \
 	iptables \
 	iputils-ping \
@@ -86,6 +88,7 @@ RUN apt update && \
 	tmux \
 	traceroute \
 	tree \
+    vim \
 	wget && \
 	apt-cache show iproute2 | dpkg --merge-avail && \
 	apt clean && \
