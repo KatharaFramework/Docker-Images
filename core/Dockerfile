@@ -52,11 +52,11 @@ RUN apt update && \
 	gnupg \
 	hping3 \
 	htop \
-    ifupdown \
 	iperf3 \
 	iptables \
 	iputils-ping \
 	iputils-tracepath \
+    isc-dhcp-client \
 	less \
 	libbpf1 \
 	libelf1 \
