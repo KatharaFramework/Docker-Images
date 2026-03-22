@@ -1,105 +1,88 @@
-BUILDX=docker buildx build --platform linux/amd64,linux/arm64
+SHELL := /bin/bash
 
-.PHONY: base quagga frr bird openbgpd krill routinator rpki-client rift-python sdn p4 scion all pushall all-multi create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi scion-multi delete-builder
+DOCKER=docker
+DOCKER_BUILD=$(DOCKER) build
+BUILDX=$(DOCKER) buildx
+BUILDX_BUILD=$(BUILDX) build --platform linux/amd64,linux/arm64
 
-all: base quagga frr bird openbgpd krill rpki-client routinator rift-python sdn p4 scion
-all-multi: create-builder base-multi quagga-multi frr-multi bird-multi openbgpd-multi krill-multi routinator-multi rpki-client-multi rift-python-multi sdn-multi p4-multi scion-multi delete-builder
+versions_frr=9 10
+versions_bind=9.11.5
+versions_scion=0.12.0
 
-pushall:
-	docker push kathara/base
-	docker push kathara/quagga
-	docker push kathara/frr
-	docker push kathara/bird
-	docker push kathara/openbgpd
-	docker push kathara/krill
-	docker push kathara/routinator
-	docker push kathara/rpki-client
-	docker push kathara/rift-python
-	docker push kathara/sdn
-	docker push kathara/p4
-	docker push kathara/scion
+retags_openvswitch=sdn
+retags_bmv2=p4
 
-base:
-	docker build -t kathara/base base
+all: build_apache build_base build_bind build_bird build_bird2 build_bird3 build_bmv2 build_core build_dnsmasq build_frr build_krill build_openbgpd build_openvswitch build_pox build_quagga build_rift-python build_routinator build_rpki-client build_scion
+all-multi: build_multi_apache build_multi_base build_multi_bind build_multi_bird build_multi_bird2 build_multi_bird3 build_multi_bmv2 build_multi_core build_multi_dnsmasq build_multi_frr build_multi_krill build_multi_openbgpd build_multi_openvswitch build_multi_pox build_multi_quagga build_multi_rift-python build_multi_routinator build_multi_rpki-client build_multi_scion
 
-quagga: base
-	docker build -t kathara/quagga quagga
+build_core:
+	echo "Building 'kathara/core' with tag 'latest'..."
+	$(DOCKER_BUILD) -t kathara/core core; \
 
-frr: base
-	docker build -t kathara/frr frr
+build_%: build_core
+	latest_found=0
+	if [ -f $*/Dockerfile ]; then \
+		echo "Building 'kathara/$*' with tag 'latest'..."; \
+		$(DOCKER_BUILD) -t kathara/$* $*; \
+		latest_found=1; \
+	fi; \
+	if [ -f $*/Dockerfile_version ]; then \
+		for version in $(versions_$*); do \
+			echo "Building 'kathara/$*' with version option '$$version'..."; \
+			$(DOCKER_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$version -t kathara/$*:$$version $*; \
+		done; \
+		if [[ $$latest_found != 1 ]]; then \
+			echo "Tagging 'kathara/$*:$$version' as 'latest'..."; \
+			$(DOCKER_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$version -t kathara/$* $*; \
+		fi; \
+	fi; \
+	for retag in $(retags_$*); do \
+		echo "Retagging 'kathara/$*:latest' to 'kathara/$$retag'..."; \
+		$(DOCKER) tag kathara/$*:latest kathara/$$retag; \
+	done; \
+	for x in $$(find $* -name 'Dockerfile-*'); do \
+  		dockerfile=$$(basename $$x); \
+		tag=$$(echo $$dockerfile | cut -d '-' -f2); \
+		echo "Building 'kathara/$*' from version file '$$tag'..."; \
+		$(DOCKER_BUILD) -f $$x -t kathara/$*:$$tag $*; \
+	done;
 
-bird: base
-	docker build -t kathara/bird bird
+build_multi_core: create-builder
+	echo "Building 'kathara/core' with tag 'latest'..."
+	$(BUILDX_BUILD) -t kathara/core --push core
 
-openbgpd: base
-	docker build -t kathara/openbgpd openbgpd
-
-krill: base
-	docker build -t kathara/krill krill
-
-routinator: base
-	docker build -t kathara/routinator routinator
-
-rpki-client: base
-	docker build -t kathara/rpki-client rpki-client
-
-rift-python: base
-	docker build -t kathara/rift-python rift-python
-
-sdn: base
-	docker build -t kathara/sdn sdn
-
-pox: base
-	docker build -t kathara/pox pox
-
-p4: base
-	docker build -t kathara/p4 p4
-
-scion: base
-	docker build -t kathara/scion scion
-
-base-multi: create-builder
-	$(BUILDX) -t kathara/base --push base
-
-quagga-multi: create-builder base-multi
-	$(BUILDX) -t kathara/quagga --push quagga
-
-frr-multi: create-builder base-multi
-	$(BUILDX) -t kathara/frr --push frr
-
-bird-multi: create-builder base-multi
-	$(BUILDX) -t kathara/bird --push bird
-
-openbgpd-multi: create-builder base-multi
-	$(BUILDX) -t kathara/openbgpd --push openbgpd
-
-krill-multi: create-builder base-multi
-	$(BUILDX) -t kathara/krill --push krill
-
-routinator-multi: create-builder base-multi
-	$(BUILDX) -t kathara/routinator --push routinator
-
-rpki-client-multi: create-builder base-multi
-	$(BUILDX) -t kathara/rpki-client --push rpki-client
-
-rift-python-multi: create-builder base-multi
-	$(BUILDX) -t kathara/rift-python --push rift-python
-
-sdn-multi: create-builder base-multi
-	$(BUILDX) -t kathara/sdn --push sdn
-
-pox-multi: create-builder base-multi
-	$(BUILDX) -t kathara/pox --push pox
-
-p4-multi: create-builder base-multi
-	$(BUILDX) -t kathara/p4 --push p4
-
-scion-multi: create-builder base-multi
-	$(BUILDX) -t kathara/scion --push scion
+build_multi_%: build_multi_core
+	latest_found=0
+	if [ -f $*/Dockerfile ]; then \
+		echo "Building 'kathara/$*' with tag 'latest'..."; \
+		$(BUILDX_BUILD) -t kathara/$* --push $*; \
+		latest_found=1; \
+	fi; \
+	if [ -f $*/Dockerfile_version ]; then \
+		for option in $(versions_$*); do \
+			echo "Building 'kathara/$*' with version option '$$version'..."; \
+			$(BUILDX_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$option -t kathara/$*:$$option --push $*; \
+		done; \
+		if [[ $$latest_found != 1 ]]; then \
+			echo "Tagging 'kathara/$*:$$version' as 'latest'..."; \
+			$(BUILDX_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$option -t kathara/$* --push $*; \
+		fi; \
+	fi; \
+	for retag in $(retags_$*); do \
+		echo "Retagging 'kathara/$*:latest' to 'kathara/$$retag'..."; \
+		$(BUILDX) imagetools create -t kathara/$$retag kathara/$*:latest; \
+	done; \
+	for x in $$(find $* -name 'Dockerfile-*'); do \
+  		dockerfile=$$(basename $$x); \
+		tag=$$(echo $$dockerfile | cut -d '-' -f2); \
+		echo "Building 'kathara/$*' from version file '$$tag'..."; \
+		$(BUILDX_BUILD) -f $$x -t kathara/$*:$$tag --push $*; \
+	done;
 
 create-builder:
-	docker buildx create --name kat-builder --use
-	docker buildx inspect --bootstrap
+	echo "Creating buildx builder..."
+	$(BUILDX) create --name kat-builder --use
+	$(BUILDX) inspect --bootstrap
 
 delete-builder:
-	docker buildx rm kat-builder
+	$(BUILDX) rm kat-builder

@@ -1,32 +1,56 @@
 # Docker Images
 
 This repository contains `Dockerfile`s used to build Kathará images. A list of the Docker images we provide can be found at [this page](https://hub.docker.com/u/kathara/) in the Docker Hub.
-Images are built both with `docker build` and with `docker buildx` for multi-architecture support.
-Currently our images are based on Debian 11 and are compiled for `amd64` and `arm64`.
+Images are built both with `docker build` and with `docker buildx` for multi-architecture support. 
+Currently, our `latest` images are based on Debian 12 and are compiled for `amd64` and `arm64`.
 If you need images based on other Linux distributions, feel free to create a PR with other Dockerfiles.
 
 Currently available images are:
-- `kathara/base`: used to build all other images. It contains a variety of network tools and some complex services like bind, apache, etc.
-- `kathara/quagga`: extends the base image adding [Quagga](https://www.nongnu.org/quagga/).
-- `kathara/frr`: extends the base image adding [FRRouting](https://frrouting.org/).
-- `kathara/openbgpd`: extend the base image adding the [OpenBGPD daemon](https://www.openbgpd.org/).
-- `kathara/krill`: extends the base image adding [Krill RPKI Certificate Authority](https://www.nlnetlabs.nl/projects/rpki/krill/).
-- `kathara/routinator`: extends the base image adding [Routinator RPKI Relying Party](https://www.nlnetlabs.nl/projects/rpki/routinator/).
-- `kathara/rpki-client`: extends the base image adding [OpenBGPD RPKI Client](https://www.rpki-client.org).
-- `kathara/bird`: extends the base image adding [BIRD](https://bird.network.cz/).
-- `kathara/rift-python`: extends the base image adding [Routing In Fat Trees (RIFT) Python Implementation](https://github.com/brunorijsman/rift-python).
-- `kathara/sdn`: extends the base image adding [OpenVSwitch](https://www.openvswitch.org/) and [Ryu SDN controller](https://osrg.github.io/ryu/).
-- `kathara/p4`: extends the base image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
-- `kathara/pox`: extends the base image adding [POX](https://github.com/noxrepo/pox) (Python based SDN Controller) and python3-networkx.
-- `kathara/scion`: extends the base image adding [SCION](https://scion-architecture.net) (Scalability, Control, and Isolation On Next-Generation Networks).
-
+- `kathara/core`: used to build all other images. It contains a variety of commonly used network tools.
+    - Available tags: `kathara/core:latest`.
+- `kathara/apache`: extends the core image by adding the [Apache](https://httpd.apache.org) webserver.
+    - Available tags: `kathara/apache:latest`.
+- `kathara/bind`: extends the core image by adding the [BIND9](https://bind9.net) DNS daemon.
+    - Available tags: `kathara/bind:9.11.5` (v9.11.5) and `kathara/bind:latest`.
+- `kathara/base`: extends the core image by adding BIND9, Apache and dnsmasq.
+    - Available tags: `kathara/base:latest`.
+- `kathara/bird`: extends the core image adding [BIRD](https://bird.network.cz/).
+    - Available tags: `kathara/bird:latest` (v1.6.8).
+- `kathara/bird2`: extends the core image adding [BIRD 2](https://bird.network.cz/).
+    - Available tags: `kathara/bird2:2.0.8` (v2.0.8) and `kathara/bird2:latest`.
+- `kathara/bird3`: extends the core image adding [BIRD 3](https://bird.network.cz/).
+    - Available tags: `kathara/bird3:latest`.
+- `kathara/bmv2`: extends the core image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
+    - Available tags: `kathara/bmv2:latest` (also retagged as `kathara/p4:latest`).
+- `kathara/dnsmasq`: extends the core image adding [dnsmasq](https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html).
+    - Available tags: `kathara/dnsmasq:latest`.
+- `kathara/frr`: extends the core image adding [FRRouting](https://frrouting.org/).
+    - Available tags: `kathara/frr:9`, `kathara/frr:10`, and `kathara/frr:latest`.
+- `kathara/krill`: extends the core image adding [Krill RPKI Certificate Authority](https://www.nlnetlabs.nl/projects/rpki/krill/).
+    - Available tags: `kathara/krill:latest`.
+- `kathara/openbgpd`: extend the core image adding the [OpenBGPD daemon](https://www.openbgpd.org/).
+    - Available tags: `kathara/openbgpd:latest`.
+- `kathara/openvswitch`: extends the core image adding [OpenVSwitch](https://www.openvswitch.org/).
+    - Available tags: `kathara/openvswitch:latest` (also retagged as `kathara/sdn:latest`).
+- `kathara/pox`: extends the core image adding [POX](https://github.com/noxrepo/pox) (Python based SDN Controller) and `python3-networkx`.
+    - Available tags: `kathara/pox:latest`.
+- `kathara/quagga`: extends the core image adding [Quagga](https://www.nongnu.org/quagga/).
+    - Available tags: `kathara/quagga:latest`.
+- `kathara/rift-python`: extends the core image adding [Routing In Fat Trees (RIFT) Python Implementation](https://github.com/brunorijsman/rift-python).
+    - Available tags: `kathara/rift-python:latest`.
+- `kathara/routinator`: extends the core image adding [Routinator RPKI Relying Party](https://www.nlnetlabs.nl/projects/rpki/routinator/).
+    - Available tags: `kathara/routinator:latest`.
+- `kathara/rpki-client`: extends the core image adding [OpenBGPD RPKI Client](https://www.rpki-client.org).
+    - Available tags: `kathara/rpki-client:latest`.
+- `kathara/scion`: extends the core image adding [SCION](https://scion-architecture.net) (Scalability, Control, and Isolation On Next-Generation Networks).
+    - Available tags: `kathara/scion:0.12.0` (v0.12.0) and `kathara/scion:latest`.
 
 ## Building from source
-To build an image from source, run `make <image_name>` to build for the current architecture.
-To build an image with `docker buildx` for multi-architectures use the command `make <image_name>-multi`.
+To build an image from source, run `make build_<image_name>` to build for the current architecture. `<image_name>` is one of the folders of the repository.
+To build an image with `docker buildx` for multi-architectures use the command `make build_multi_<image_name>`.
 **Beware**: building images with `docker buildx` automatically push the images on the Kathará Docker Hub. If you are not allowed to push, change the `Makefile` before running `make`.
 
-Example: `make quagga` or `make quagga-multi`.
+Example: `make build_quagga` or `make build_multi_quagga`.
 
 ## Extend Kathará Images
 
