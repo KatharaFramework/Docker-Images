@@ -3,12 +3,12 @@ LABEL org.opencontainers.image.authors="Kathara Team <contact@kathara.org>"
 
 ARG TARGETARCH
 
-RUN wget -qO - "https://pkg.labs.nic.cz/gpg" | gpg --dearmor -o /usr/share/keyrings/bird-pkg.gpg && \
-	echo "deb [signed-by=/usr/share/keyrings/bird-pkg.gpg] https://pkg.labs.nic.cz/bird3 bookworm main" | tee /etc/apt/sources.list.d/bird.list
+RUN wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC4BF02689F87C61287782DCCC928FEB3B3E94585" | gpg --dearmor -o /usr/share/keyrings/bird-pkg.gpg && \
+	echo "deb [signed-by=/usr/share/keyrings/bird-pkg.gpg] https://ppa.launchpadcontent.net/cz.nic-labs/bird/ubuntu jammy main" | tee /etc/apt/sources.list.d/bird.list
 
 RUN apt update && \
 	apt install -y --no-install-recommends \
-	bird3 golang-go && \
+	bird2=2.17.2-cznic.1~jammy golang-go && \
 	apt clean && \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 

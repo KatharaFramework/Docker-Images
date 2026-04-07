@@ -14,11 +14,11 @@ Currently available images are:
     - Available tags: `kathara/bind:9.11.5` (v9.11.5) and `kathara/bind:latest`.
 - `kathara/base`: extends the core image by adding BIND9, Apache and dnsmasq.
     - Available tags: `kathara/base:latest`.
-- `kathara/bird`: extends the core image adding [BIRD](https://bird.network.cz/).
+- `kathara/bird`: extends the core image adding [BIRD](https://bird.network.cz/) and [birdwatcher](https://github.com/alice-lg/birdwatcher).
     - Available tags: `kathara/bird:latest` (v1.6.8).
-- `kathara/bird2`: extends the core image adding [BIRD 2](https://bird.network.cz/).
-    - Available tags: `kathara/bird2:2.0.8` (v2.0.8) and `kathara/bird2:latest`.
-- `kathara/bird3`: extends the core image adding [BIRD 3](https://bird.network.cz/).
+- `kathara/bird2`: extends the core image adding [BIRD 2](https://bird.network.cz/) and [birdwatcher](https://github.com/alice-lg/birdwatcher).
+    - Available tags: `kathara/bird2:2.0.8` (v2.0.8), `kathara/bird2:2.15.1` (v2.15.1) and `kathara/bird2:latest`.
+- `kathara/bird3`: extends the core image adding [BIRD 3](https://bird.network.cz/) and [birdwatcher](https://github.com/alice-lg/birdwatcher).
     - Available tags: `kathara/bird3:latest`.
 - `kathara/bmv2`: extends the core image adding [Behavioral Model (bmv2)](https://github.com/p4lang/behavioral-model) to compile and run P4-compliant programmable switches.
     - Available tags: `kathara/bmv2:latest` (also retagged as `kathara/p4:latest`).
