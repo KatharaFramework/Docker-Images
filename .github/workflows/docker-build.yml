@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   detect:
-    runs-on: self-hosted
+    runs-on: [self-hosted]
     outputs:
       dirs: ${{ steps.setdirs.outputs.dirs }}
       core: ${{ steps.setdirs.outputs.core }}
@@ -45,7 +45,7 @@ jobs:
 
   build:
     needs: detect
-    runs-on: self-hosted
+    runs-on: [self-hosted]
     strategy:
       matrix:
         dir: ${{ fromJson(needs.detect.outputs.dirs) }}
