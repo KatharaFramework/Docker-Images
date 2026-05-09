@@ -25,7 +25,7 @@ build_core:
 	echo "Building '$(IMAGE_PREFIX)/core' with tag 'latest'..."
 	$(DOCKER_BUILD) -t $(IMAGE_PREFIX)/core core; \
 
-build_%: build_core
+build_%:
 	latest_found=0
 	if [ -f $*/Dockerfile ]; then \
 		echo "Building '$(IMAGE_PREFIX)/$*' with tag 'latest'..."; \
@@ -57,7 +57,7 @@ build_multi_core: create-builder
 	echo "Building '$(IMAGE_PREFIX)/core' with tag 'latest'..."
 	$(BUILDX_BUILD) -t $(IMAGE_PREFIX)/core $(PUSH) core
 
-build_multi_%: build_multi_core
+build_multi_%:
 	latest_found=0
 	if [ -f $*/Dockerfile ]; then \
 		echo "Building '$(IMAGE_PREFIX)/$*' with tag 'latest'..."; \
