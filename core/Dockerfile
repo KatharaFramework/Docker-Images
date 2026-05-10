@@ -58,7 +58,6 @@ RUN apt update && \
 	iputils-tracepath \
 	isc-dhcp-client \
 	less \
-	nonexistentpackage \
 	libbpf1 \
 	libelf1 \
 	links \
