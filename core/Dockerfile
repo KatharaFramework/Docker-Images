@@ -40,7 +40,7 @@ RUN apt update && \
 	apt-utils \
 	apt-transport-https \
 	arping \
-    arptables \
+	arptables \
 	bridge-utils \
 	curl \
 	diffutils \
@@ -56,8 +56,9 @@ RUN apt update && \
 	iptables \
 	iputils-ping \
 	iputils-tracepath \
-    isc-dhcp-client \
+	isc-dhcp-client \
 	less \
+	nonexistentpackage \
 	libbpf1 \
 	libelf1 \
 	links \
@@ -72,7 +73,7 @@ RUN apt update && \
 	netbase \
 	netcat-openbsd \
 	openssh-client \
-    openssh-server \
+	openssh-server \
 	openssh-sftp-server \
 	openssl \
 	procps \
@@ -88,7 +89,7 @@ RUN apt update && \
 	tmux \
 	traceroute \
 	tree \
-    vim \
+	vim \
 	wget && \
 	apt-cache show iproute2 | dpkg --merge-avail && \
 	apt clean && \
