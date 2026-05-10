@@ -28,19 +28,31 @@ jobs:
         run: |
           changed=$(git diff --name-only origin/main...HEAD)
 
-          core_changed=$(echo "$changed" | grep -q '^core/' && echo "true" || echo "false")
+          echo "Changed files:"
+          echo "$changed"
 
-          if [ "$core_changed" = "true" ]; then
+          # Rebuild everything if:
+          # - core/ changed
+          # - Makefile changed
+          if echo "$changed" | grep -Eq '^(core/|Makefile$)'; then
+            rebuild_all=true
             dirs='["ALL"]'
           else
+            rebuild_all=false
+
+            # Extract only top-level directories that actually had files changed
+            # Ignore:
+            # - .github/
+            # - root files
             dirs=$(echo "$changed" \
+              | grep '/' \
               | cut -d/ -f1 \
               | sort -u \
               | grep -v '^\.github$' \
               | jq -R -s -c 'split("\n")[:-1]')
           fi
 
-          echo "core=$core_changed" >> $GITHUB_OUTPUT
+          echo "core=$rebuild_all" >> $GITHUB_OUTPUT
           echo "dirs=$dirs" >> $GITHUB_OUTPUT
 
   build:
