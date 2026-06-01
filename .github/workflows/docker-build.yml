@@ -92,7 +92,7 @@ jobs:
               PUSH="${{ github.event_name == 'push' && '--push' || '--load' }}"
           else
             echo "Building ${{ matrix.dir }}"
-            make build_multi_${{ matrix.dir }} \
+            make -d build_multi_${{ matrix.dir }} \
               REGISTRY=ghcr.io \
               IMAGE_NAMESPACE=${{ steps.vars.outputs.owner_lc }} \
               PUSH="${{ github.event_name == 'push' && '--push' || '--load' }}"
