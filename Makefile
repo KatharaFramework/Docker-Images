@@ -21,38 +21,6 @@ retags_bmv2=p4
 all: build_apache build_base build_bind build_bird build_bird2 build_bird3 build_bmv2 build_core build_dnsmasq build_frr build_krill build_openbgpd build_openvswitch build_pox build_quagga build_rift-python build_routinator build_rpki-client build_scion
 all-multi: build_multi_apache build_multi_base build_multi_bind build_multi_bird build_multi_bird2 build_multi_bird3 build_multi_bmv2 build_multi_core build_multi_dnsmasq build_multi_frr build_multi_krill build_multi_openbgpd build_multi_openvswitch build_multi_pox build_multi_quagga build_multi_rift-python build_multi_routinator build_multi_rpki-client build_multi_scion
 
-build_core:
-	echo "Building '$(IMAGE_PREFIX)/core' with tag 'latest'..."
-	$(DOCKER_BUILD) -t $(IMAGE_PREFIX)/core core; \
-
-build_%:
-	latest_found=0
-	if [ -f $*/Dockerfile ]; then \
-		echo "Building '$(IMAGE_PREFIX)/$*' with tag 'latest'..."; \
-		$(DOCKER_BUILD) -t $(IMAGE_PREFIX)/$* $*; \
-		latest_found=1; \
-	fi; \
-	if [ -f $*/Dockerfile_version ]; then \
-		for version in $(versions_$*); do \
-			echo "Building '$(IMAGE_PREFIX)/$*' with version option '$$version'..."; \
-			$(DOCKER_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$version -t $(IMAGE_PREFIX)/$*:$$version $*; \
-		done; \
-		if [[ $$latest_found != 1 ]]; then \
-			echo "Tagging '$(IMAGE_PREFIX)/$*:$$version' as 'latest'..."; \
-			$(DOCKER_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$version -t $(IMAGE_PREFIX)/$* $*; \
-		fi; \
-	fi; \
-	for retag in $(retags_$*); do \
-		echo "Retagging 'kathara/$*:latest' to '$(IMAGE_PREFIX)/$$retag'..."; \
-		$(DOCKER) tag kathara/$*:latest $(IMAGE_PREFIX)/$$retag; \
-	done; \
-	for x in $$(find $* -name 'Dockerfile-*'); do \
-  		dockerfile=$$(basename $$x); \
-		tag=$$(echo $$dockerfile | cut -d '-' -f2); \
-		echo "Building '$(IMAGE_PREFIX)/$*' from version file '$$tag'..."; \
-		$(DOCKER_BUILD) -f $$x -t $(IMAGE_PREFIX)/$*:$$tag $*; \
-	done;
-
 build_multi_core: create-builder
 	echo "Building '$(IMAGE_PREFIX)/core' with tag 'latest'..."
 	$(BUILDX_BUILD) -t $(IMAGE_PREFIX)/core $(PUSH) core
@@ -83,6 +51,38 @@ build_multi_%:
 		tag=$$(echo $$dockerfile | cut -d '-' -f2); \
 		echo "Building '$(IMAGE_PREFIX)/$*' from version file '$$tag'..."; \
 		$(BUILDX_BUILD) -f $$x -t $(IMAGE_PREFIX)/$*:$$tag $(PUSH) $*; \
+	done;
+
+build_core:
+	echo "Building '$(IMAGE_PREFIX)/core' with tag 'latest'..."
+	$(DOCKER_BUILD) -t $(IMAGE_PREFIX)/core core; \
+
+build_%:
+	latest_found=0
+	if [ -f $*/Dockerfile ]; then \
+		echo "Building '$(IMAGE_PREFIX)/$*' with tag 'latest'..."; \
+		$(DOCKER_BUILD) -t $(IMAGE_PREFIX)/$* $*; \
+		latest_found=1; \
+	fi; \
+	if [ -f $*/Dockerfile_version ]; then \
+		for version in $(versions_$*); do \
+			echo "Building '$(IMAGE_PREFIX)/$*' with version option '$$version'..."; \
+			$(DOCKER_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$version -t $(IMAGE_PREFIX)/$*:$$version $*; \
+		done; \
+		if [[ $$latest_found != 1 ]]; then \
+			echo "Tagging '$(IMAGE_PREFIX)/$*:$$version' as 'latest'..."; \
+			$(DOCKER_BUILD) -f $*/Dockerfile_version --build-arg VERSION=$$version -t $(IMAGE_PREFIX)/$* $*; \
+		fi; \
+	fi; \
+	for retag in $(retags_$*); do \
+		echo "Retagging 'kathara/$*:latest' to '$(IMAGE_PREFIX)/$$retag'..."; \
+		$(DOCKER) tag kathara/$*:latest $(IMAGE_PREFIX)/$$retag; \
+	done; \
+	for x in $$(find $* -name 'Dockerfile-*'); do \
+  		dockerfile=$$(basename $$x); \
+		tag=$$(echo $$dockerfile | cut -d '-' -f2); \
+		echo "Building '$(IMAGE_PREFIX)/$*' from version file '$$tag'..."; \
+		$(DOCKER_BUILD) -f $$x -t $(IMAGE_PREFIX)/$*:$$tag $*; \
 	done;
 
 create-builder:
