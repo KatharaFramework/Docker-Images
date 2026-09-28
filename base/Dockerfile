@@ -8,7 +8,9 @@ RUN apt install -y --no-install-recommends \
 	apache2-bin \
 	bind9 \
 	bind9-utils \
-    dnsmasq && \
+    dnsmasq \
+	wireguard-go \
+	wireguard-tools && \
 	apt clean && \
 	rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
